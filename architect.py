@@ -1,5 +1,5 @@
-# [Risk of Rain 2 Fun House] - v27.3 (The Master-Key Release)
-# Description: Master List Integration, DLC 2 Logic-String IDs, Verified Console Commands.
+# [Risk of Rain 2 Fun House] - v27.4 (The Git-Native Release)
+# Description: Native Git Sync for Profiles, Master List Integration, Verified IDs.
 
 import sys
 import os
@@ -63,7 +63,7 @@ from inputs import get_gamepad
 
 # --- 2. CONFIG ---
 APP_NAME = "Risk of Rain 2 Fun House"
-VERSION = "27.3.0"
+VERSION = "27.4.0"
 BASE_DIR = os.getcwd()
 DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
 PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -73,11 +73,7 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 WIKI_BASE = "https://riskofrain2.wiki.gg"
 WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
 WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-HEADERS = {"User-Agent": "ROR2-FunHouse/27.3 (Master Key)"}
-
-# Repo Config
-REPO_API_URL = "https://api.github.com/repos/AlohaOe-SD26/ROR2_HACK/contents/ROR2_Data/Profiles"
-RAW_URL_BASE = "https://raw.githubusercontent.com/AlohaOe-SD26/ROR2_HACK/main/ROR2_Data/Profiles"
+HEADERS = {"User-Agent": "ROR2-FunHouse/27.4 (Git Native)"}
 
 for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: os.makedirs(d, exist_ok=True)
 logging.basicConfig(filename=os.path.join(LOG_DIR, "runtime.log"), level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -161,7 +157,7 @@ INTERNAL_ID_MAP = {
     # Common
     "Armor-Piercing Rounds": "BossDamageBonus",
     "Backup Magazine": "SecondarySkillMagazine",
-    "Bison Steak": "FlatHealth", # Validated: FlatHealth
+    "Bison Steak": "FlatHealth", 
     "Bundle of Fireworks": "Firework",
     "Bustling Fungus": "Mushroom",
     "Cautious Slug": "HealWhileSafe",
@@ -237,7 +233,7 @@ INTERNAL_ID_MAP = {
     # Boss
     "Defense Nucleus": "MinorConstructOnKill",
     "Empathy Cores": "RoboBallBuddy",
-    "Genesis Loop": "BleedOnHitAndExplode", # Wait, usually NovaOnLowHealth? User list says BleedOnHitAndExplode. Mapping per user list for strict adherence.
+    "Genesis Loop": "BleedOnHitAndExplode",
     "Halcyon Seed": "TitanGoldDuringTP",
     "Little Disciple": "SprintWisp",
     "Mired Urn": "SiphonOnLowHealth",
@@ -252,7 +248,7 @@ INTERNAL_ID_MAP = {
     "Beads of Fealty": "LunarTrinket",
     "Brittle Crown": "GoldOnHit",
     "Corpsebloom": "RepeatHeal",
-    "Defiant Gouge": "GlobalDeathMark", # Corrected for game logic
+    "Defiant Gouge": "GlobalDeathMark", 
     "Egocentrism": "LunarSun",
     "Essence of Heresy": "LunarSpecialReplacement",
     "Eulogy Zero": "RandomlyLunar",
@@ -376,40 +372,44 @@ class LogWatcher:
                 except: pass
             time.sleep(1)
 
+# --- REWRITTEN CLOUD MANAGER (GIT NATIVE) ---
 class CloudManager:
     @staticmethod
-    def push_profile(profile_name):
-        target_file = os.path.join(PROFILE_DIR, f"{profile_name}.json")
-        if not os.path.exists(target_file): return False, "Profile not found."
+    def run_git(args, error_msg):
         try:
-            subprocess.run(["git", "status"], cwd=BASE_DIR, check=True, capture_output=True)
-            rel_path = os.path.relpath(target_file, BASE_DIR)
-            subprocess.run(["git", "add", rel_path], cwd=BASE_DIR, check=True, capture_output=True)
-            subprocess.run(["git", "commit", "-m", f"Cloud Sync: {profile_name}"], cwd=BASE_DIR, check=False, capture_output=True) 
-            res = subprocess.run(["git", "push"], cwd=BASE_DIR, check=True, capture_output=True, text=True)
-            return True, "Uploaded successfully!"
+            subprocess.run(args, cwd=BASE_DIR, check=True, capture_output=True, text=True)
+            return True, "Success"
         except subprocess.CalledProcessError as e:
             err = e.stderr if e.stderr else str(e)
-            return False, f"Git Error:\n{err}"
-        except Exception as e:
-            return False, str(e)
+            return False, f"{error_msg}\n{err}"
+
+    @staticmethod
+    def push_profile(profile_name):
+        target_file = os.path.join("ROR2_Data", "Profiles", f"{profile_name}.json")
+        if not os.path.exists(os.path.join(BASE_DIR, target_file)): return False, "Profile not found."
+        
+        # 1. Pull First (Prevent Conflicts)
+        CloudManager.run_git(["git", "pull", "origin", "main"], "Pull failed.")
+        
+        # 2. Add
+        ok, msg = CloudManager.run_git(["git", "add", target_file], "Git Add failed.")
+        if not ok: return False, msg
+        
+        # 3. Commit
+        ok, msg = CloudManager.run_git(["git", "commit", "-m", f"Sync Profile: {profile_name}"], "Git Commit failed.")
+        
+        # 4. Push
+        ok, msg = CloudManager.run_git(["git", "push", "origin", "main"], "Git Push failed.")
+        if not ok: return False, msg
+        
+        return True, "Profile Uploaded!"
 
     @staticmethod
     def pull_profiles():
-        try:
-            r = requests.get(REPO_API_URL, timeout=5)
-            if r.status_code != 200: return False, "Connection Error."
-            files = r.json(); downloaded = 0
-            for file in files:
-                name = file['name']
-                if not name.endswith(".json"): continue
-                local_path = os.path.join(PROFILE_DIR, name)
-                if not os.path.exists(local_path):
-                    raw_r = requests.get(file['download_url'])
-                    with open(local_path, 'wb') as f: f.write(raw_r.content)
-                    downloaded += 1
-            return True, f"Downloaded {downloaded} new profiles."
-        except: return False, "Connection Error."
+        # Native Git Pull
+        ok, msg = CloudManager.run_git(["git", "pull", "origin", "main"], "Git Pull failed.")
+        if ok: return True, "Profiles Synced."
+        return False, msg
 
 class WikiSyncEngine:
     def __init__(self, cb):
@@ -504,7 +504,6 @@ class WikiSyncEngine:
                         href = link_tag['href']
                         if href.startswith("/"): href = WIKI_BASE + href
                         
-                        # Smart Description
                         brief_desc = "No description."
                         candidates = []
                         for col in cols[1:]:
@@ -782,7 +781,8 @@ class App(ctk.CTk):
             if os.path.getsize(CACHE_FILE) < 1024: corrupt = True
         
         if not os.path.exists(CACHE_FILE) or corrupt:
-            s = SetupWindow(self, self.on_setup_complete)
+            # Fix GC Issue: Keep reference to window
+            self.setup_window = SetupWindow(self, self.on_setup_complete)
         else:
             self._ask_upd()
 
@@ -790,10 +790,11 @@ class App(ctk.CTk):
     
     def _ask_upd(self):
         d = ctk.CTkToplevel(self); d.title("Database Check"); center_window(d, 400, 250); d.attributes("-topmost", True); d.protocol("WM_DELETE_WINDOW", lambda: os._exit(0))
+        self.upd_window = d # Keep ref
         ctk.CTkLabel(d, text="ARCHIVE FOUND", font=("Impact", 24)).pack(pady=(20, 10))
         ctk.CTkLabel(d, text="Files detected. Validate updates from Wiki?", font=("Arial", 14, "bold")).pack(pady=5)
         row = ctk.CTkFrame(d, fg_color="transparent"); row.pack()
-        def y(): d.destroy(); SetupWindow(self, self.on_setup_complete)
+        def y(): d.destroy(); self.setup_window = SetupWindow(self, self.on_setup_complete)
         def n(): d.destroy(); self.on_setup_complete()
         ctk.CTkButton(row, text="YES, UPDATE", width=120, fg_color="green", command=y).pack(side="left", padx=10)
         ctk.CTkButton(row, text="NO, LAUNCH", width=120, fg_color="gray", command=n).pack(side="left", padx=10)
