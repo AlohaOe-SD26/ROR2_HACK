@@ -1,0 +1,10 @@
+{
+    "name": "Molten Perforator",
+    "id": "Molten_Perforator",
+    "desc": "10% chance on hit to call forth 3 magma balls from an enemy, dealing 300% (+300% per stack) damage each.",
+    "notes": "The Molten Perforator is a boss item in Risk of Rain 2, dropped by the   Magma Worm. \nWhen the holder damages an enemy, there is a 10% chance that 3 magma balls will spawn, each exploding with a radius of 7m, dealing 300% (+300% per stack) total damage and   igniting enemies.\nEach magma ball has a proc coefficient of 0.7. \n\n\n== Notes ==\nCorrection: This item does total damage, meaning it deals 300% of the damage of the hit that triggered it, not 300% base damage.\nWhile the magma balls tend to miss small enemies like   Alloy Vultures, they work exceptionally well against large enemies like   Elder Lemurians and bosses.\nHaving an  Ignition Tank makes the magma balls inflict   Stronger Burn instead of   Burn, dealing incredible damage.\n\n\n== Lore ==\nLab Dissection Analysis File\n\nSubject: Molten Perforator\n\nTechnician: Dema \"Dembones\" Brown\n\nTable Spec: Heatsink UB-2\n\nNotes:\n\n> Using UB-2 due to temperatures above safe levels.\n\n> Removing molten enamel and placing aside for substance analysis. It\u2019s solid, yet swimming.\n\n> Upon structural investigation, found cavities and internal chambers\n\n> Reduce lab temperatures by 10 degrees\n\n> Heat generating veins present - fire is being supplied to the tooth?\n\n> Removed my lab coat, very hot\n\n> Heat generation is still occurring in the severed object\n\n> Put some more ice in my drink WOW it's hot\n\n> Timestamping for break\n\n\n== Version History ==\nEarly Access Content Update 5\nMajor Content\nAdded New Boss item: Molten Perforator\nAdded New Item Lore Entry: Molten Perforator\n\n\n== Gallery ==",
+    "url": "https://riskofrain2.wiki.gg/wiki/Molten_Perforator",
+    "img_file": "Molten_Perforator.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Molten_Perforator",
+    "rarity_raw": "Boss"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Foreign Fruit",
+    "id": "Foreign_Fruit",
+    "desc": "Instantly heal for 50% of your maximum health .",
+    "notes": "The Foreign Fruit is a returning equipment in Risk of Rain 2. \nActivating the Foreign Fruit immediately heals the holder for 50% of their maximum health.\n\n\n== Tips ==\nCombining the Foreign Fruit with a  Rejuvenation Rack allows the player to instantly recover all their health.\nThe same can be done with a  Corpsebloom, but it will take 10 seconds to finish healing.\nAvoid this equipment if using the  Transcendence, as the heal will not benefit shields in any way.\nWith enough stacks of  Gesture of the Drowned and/or  Fuel Cells, the player can rapidly and continuously heal.\nThis equipment already pairs well with the  Aegis and  N'kuhana's Opinion, but becomes even more effective when using this strategy.\n\n\n== Lore ==\n\u201cThe Nutapple is an exotic fruit picked from the curious Xelphum Tree, native to coastal Gemines on Titan. Renowned for its sweet, yet cleansing flavor (and low caloric total), the Nutapple is a must-have for health enthusiasts everywhere.\u201d\n\n- Dietary Sciences Digest\n\n\n== Version History ==\nAnniversary Update\nMajor Content\nAdded New Lore Entry: Foreign Fruit\nEarly Access Artifacts Content Update\nSound & Music\nFix Foreign Fruit not playing its activation SFX correctly over the network\n\n\n== Trivia ==\nThe Foreign Fruit is also known as the \"nutapple.\" According to its logbook entry in the first Risk of Rain, it has the taste of both a cashew and an apple.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Foreign_Fruit",
+    "img_file": "Foreign_Fruit.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Equipment\\Foreign_Fruit",
+    "rarity_raw": "Equipment"
+}

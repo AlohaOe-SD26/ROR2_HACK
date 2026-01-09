@@ -1,0 +1,10 @@
+{
+    "name": "Spectral Circlet",
+    "id": "Spectral_Circlet",
+    "desc": "Celestine Celestine (Affix Buff) Gain the power of a Celestine Elite. Cloak nearby allies, and apply an 80% slow on hit.",
+    "notes": "The Spectral Circlet is an Elite equipment in Risk of Rain 2. It can only be found as a rare drop from a {  Celestine Elite. The drop chance is 1/4000 from each Celestine Elite, but this chance is affected by the  57 Leaf Clover and  Purity.\nA player equipped with the Spectral Circlet gains the power of a Celestine Elite; their attacks{  greatly slow enemies, and they gain a large aura that grants the {  Celestine Cloak buff to non-Celestine allies within, turning them invisible. \nAlthough the Spectral Circlet is held in the equipment slot, it works passively and cannot be activated. Equipment cooldown reduction and additional equipment charges from  Fuel Cells do not affect its behavior.\n\n\n== Tips ==\n  Captain can make better use of this equipment than most Survivors, since his purchased drones and turrets will become invisible as long as they stick close to him. However, it still may not be worthwhile compared to what other equipment can do for him.\nKeep in mind that invisible allies, particularly invisible drones, will not be able to draw enemies' attention away from the player. Although the holder's allies will be relatively safe from enemy attacks, the holder may find themself on the receiving end of more aggro than they bargained for.\nGiving this equipment to an   Equipment Drone is a decent idea, as it will turn the player and other allies invisible and alleviate the above problem.\n\n\n== Version History ==\nEarly Access Artifacts Content Update\nGameplay Changes\n\ud83c\udf27 Is no longer invisible and missing an icon\nBug Fixes\nFix characters hidden by Spectral Circlet still being visible to AI\n\n\n== Gallery ==",
+    "url": "https://riskofrain2.wiki.gg/wiki/Spectral_Circlet",
+    "img_file": "Spectral_Circlet.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Equipment\\Spectral_Circlet",
+    "rarity_raw": "Equipment"
+}

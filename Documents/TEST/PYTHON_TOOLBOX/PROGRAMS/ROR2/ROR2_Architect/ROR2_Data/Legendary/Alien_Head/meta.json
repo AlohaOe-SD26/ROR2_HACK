@@ -1,0 +1,10 @@
+{
+    "name": "Alien Head",
+    "id": "Alien_Head",
+    "desc": "Reduce skill cooldowns by 25% (+25% per stack) .",
+    "notes": "The Alien Head is a returning item in Risk of Rain 2. \nA player holding the Alien Head has all their skill cooldowns reduced by 25% (+25% per stack).\n\n\n== Notes ==\nThe cooldown reduction from the Alien Head is calculated before the flat reduction from the  Purity. For instance, if a player holds 1 Alien Head and 1 Purity, a skill that would normally take 4 seconds to cool down would instead have a 1 second cooldown (-1 second from the Alien Head, then -2 seconds from the Purity).\n\n\n== Math ==\nThe skill cooldown is determined by the formula cooldown \u22c5 0.75 ^ amount\n\nThe cooldown reduction cannot reduce skills' cooldowns below 0.5s.\n\n\n== Graph ==\nThe following graph shows the effect on a 10 second cooldown.\n\n\n== Lore ==\nOrder: \"Alien Head\"\n\nTracking Number: 76******\n\nEstimated Delivery: 07/13/2056\n\nShipping Method:  High Priority/Biological\n\nShipping Address: Solomon, ???, Backwaters, Mars\n\nShipping Details:\n\nImportant sign from the spirits. Passed down for many generations. Must be used for high noon ritual to ward off sickness and fatigue. Must be kept cool or will rot. Helps energize the kinfolk and can be used for extra human strength and agility. Important.\n\n\n== Version History ==\nAnniversary Update\nBug Fixes\nFixed Alien Head particles not being affected by invisibility",
+    "url": "https://riskofrain2.wiki.gg/wiki/Alien_Head",
+    "img_file": "Alien_Head.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Legendary\\Alien_Head",
+    "rarity_raw": "Legendary"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Sentry Key",
+    "id": "Sentry_Key",
+    "desc": "Gain +15% move speed . Can be placed in a Sentry Terminal or used for decryption.",
+    "notes": "The Sentry Key is a planet/boss item in Risk of Rain 2, added in the  Alloyed Collective expansion. It is dropped by   Collective Elites on   Conduit Canyon.\nThe primary use of the item is to activate the Sentry Terminals blocking off paths and the teleporter on Conduit Canyon, but it also has the bonus effect of increasing movement speed by +15%. This effect does not stack.\nWith the help of the Wandering CHEF, it can also be used to turn the  Encrypted Cerebellum into the  Exposed Cerebellum.\n \n\n\n== Notes ==\nOnly a limited amount of Sentry Keys is meant to be obtainable.\nOne for each Sentry Terminal, and one per Player. (8 + PlayerAmount)\nThis can be circumvented by leaving Sentry Keys on the ground.\nThe speed gained is considered a buff, allowing it to count towards  Growth Nectar.\nThe sentry key cannot be turned into yellow scrap at a scrapper nor exchanged for a boss item at a yellow printer.\n\n\n== Lore ==\n19224; DESIGN REQUEST RECOGNIZED\n19224; DESIGN OVERVIEW FOR LOGISTICS SECURITY MEASURES:\n\nSER ID> 02990775123011\nDESIGN> SENTRY KEY\n\nHIGHLIGHTS\n\nENCRYPTION: TERNARY QUBIT\nUSAGE: THREE-PART DISTRIBUTED AUTHORITY\nKEY EXPIRATION LIFETIME: 0.68 TIN-CYCLES\n\n(!DO NOT EXPOSE DECRYPTION ALGORITHM!)\n\nDON'T LOCK YOURSELF OUT\n\n\n== Version History ==\nAlloyed Collective\n* Added New Item: Sentry Key",
+    "url": "https://riskofrain2.wiki.gg/wiki/Sentry_Key",
+    "img_file": "Sentry_Key.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Sentry_Key",
+    "rarity_raw": "Boss"
+}

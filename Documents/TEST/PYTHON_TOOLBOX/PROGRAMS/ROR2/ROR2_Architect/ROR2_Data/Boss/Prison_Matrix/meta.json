@@ -1,0 +1,10 @@
+{
+    "name": "Prison Matrix",
+    "id": "Prison_Matrix",
+    "desc": "Gain +50% armor . Can be placed in a Matrix Terminal.",
+    "notes": "The Prison Matrix is a boss item in Risk of Rain 2, added in the  Alloyed Collective expansion. \nIt is dropped by the Solus Coffer interactable in   Solutional Haunt.\nThe primary use of the item is to activate the Matrix Terminal blocking the Loot Vault in Solutional Haunt, and unlocking Drifter, if the lobby does not have her unlocked.\nBut it also has the bonus effect of increasing base armor by 50%. This effect does not stack with multiple of the item.\nWith the help of the Wandering CHEF, it can also be used to turn the  Encrypted Cerebellum into the  Exposed Cerebellum.\n\n\n== Notes ==\nAs this item only affects a survivor's base armor, this item effectively does nothing for most survivors and has no effect on items that grant additional armor.\nFor survivors that do have base armor, it would only add 10 armor, or 6 armor for   MUL-T\nThe armor gained is considered a buff, allowing it to count towards  Growth Nectar.\n\n\n== Lore ==\n18223; DESIGN REQUEST RECOGNIZED\n18224; DESIGN OVERVIEW FOR DIVERGENT UNIT CONTAINMENT SOLUTION:\n\nSER ID> 02390470123073\nDESIGN> PRISON MATRIX\n\nHIGHLIGHTS\n\nENERGY TYPE: FISSION (CONTAINED)\nBALANCE: TESSERACT-STABILIZED\nCOERCION PATTERN: AXIS RATIOS\nLIFE CYCLE: 13 TIN-CYCLES \n\n (!DO NOT RELEASE CONTENTS INTO COLLECTIVE NETWORK!)\n\nWE MADE THIS\n\n\n== Version History ==\nAlloyed Collective\n* Added New Item: Prison Matrix",
+    "url": "https://riskofrain2.wiki.gg/wiki/Prison_Matrix",
+    "img_file": "Prison_Matrix.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Prison_Matrix",
+    "rarity_raw": "Boss"
+}
