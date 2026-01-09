@@ -1,5 +1,5 @@
-# [Risk of Rain 2 Fun House] - v27.4 (The Git-Native Release)
-# Description: Native Git Sync for Profiles, Master List Integration, Verified IDs.
+# [Risk of Rain 2 Fun House] - v27.5 (The Git-Adaptive Release)
+# Description: Dynamic Branch Detection, Robust Profile Sync, Master List Integration.
 
 import sys
 import os
@@ -63,7 +63,7 @@ from inputs import get_gamepad
 
 # --- 2. CONFIG ---
 APP_NAME = "Risk of Rain 2 Fun House"
-VERSION = "27.4.0"
+VERSION = "27.5.0"
 BASE_DIR = os.getcwd()
 DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
 PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -73,7 +73,11 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 WIKI_BASE = "https://riskofrain2.wiki.gg"
 WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
 WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-HEADERS = {"User-Agent": "ROR2-FunHouse/27.4 (Git Native)"}
+HEADERS = {"User-Agent": "ROR2-FunHouse/27.5 (Adaptive)"}
+
+# Repo Config
+REPO_API_URL = "https://api.github.com/repos/AlohaOe-SD26/ROR2_HACK/contents/ROR2_Data/Profiles"
+RAW_URL_BASE = "https://raw.githubusercontent.com/AlohaOe-SD26/ROR2_HACK/main/ROR2_Data/Profiles"
 
 for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: os.makedirs(d, exist_ok=True)
 logging.basicConfig(filename=os.path.join(LOG_DIR, "runtime.log"), level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
@@ -372,8 +376,16 @@ class LogWatcher:
                 except: pass
             time.sleep(1)
 
-# --- REWRITTEN CLOUD MANAGER (GIT NATIVE) ---
+# --- REWRITTEN CLOUD MANAGER (DYNAMIC GIT) ---
 class CloudManager:
+    @staticmethod
+    def get_current_branch():
+        try:
+            result = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=BASE_DIR, capture_output=True, text=True, check=True)
+            return result.stdout.strip()
+        except:
+            return "main" # Fallback
+
     @staticmethod
     def run_git(args, error_msg):
         try:
@@ -388,26 +400,31 @@ class CloudManager:
         target_file = os.path.join("ROR2_Data", "Profiles", f"{profile_name}.json")
         if not os.path.exists(os.path.join(BASE_DIR, target_file)): return False, "Profile not found."
         
-        # 1. Pull First (Prevent Conflicts)
-        CloudManager.run_git(["git", "pull", "origin", "main"], "Pull failed.")
+        branch = CloudManager.get_current_branch()
+        
+        # 1. Pull (Sync)
+        CloudManager.run_git(["git", "pull", "origin", branch], "Pull failed.")
         
         # 2. Add
         ok, msg = CloudManager.run_git(["git", "add", target_file], "Git Add failed.")
         if not ok: return False, msg
         
-        # 3. Commit
-        ok, msg = CloudManager.run_git(["git", "commit", "-m", f"Sync Profile: {profile_name}"], "Git Commit failed.")
+        # 3. Commit (Allow empty in case no changes)
+        try:
+            subprocess.run(["git", "commit", "-m", f"Sync Profile: {profile_name}"], cwd=BASE_DIR, check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError:
+            pass # Nothing to commit is fine
         
         # 4. Push
-        ok, msg = CloudManager.run_git(["git", "push", "origin", "main"], "Git Push failed.")
+        ok, msg = CloudManager.run_git(["git", "push", "origin", branch], "Git Push failed.")
         if not ok: return False, msg
         
         return True, "Profile Uploaded!"
 
     @staticmethod
     def pull_profiles():
-        # Native Git Pull
-        ok, msg = CloudManager.run_git(["git", "pull", "origin", "main"], "Git Pull failed.")
+        branch = CloudManager.get_current_branch()
+        ok, msg = CloudManager.run_git(["git", "pull", "origin", branch], "Git Pull failed.")
         if ok: return True, "Profiles Synced."
         return False, msg
 
@@ -504,6 +521,7 @@ class WikiSyncEngine:
                         href = link_tag['href']
                         if href.startswith("/"): href = WIKI_BASE + href
                         
+                        # Smart Description
                         brief_desc = "No description."
                         candidates = []
                         for col in cols[1:]:
