@@ -1,0 +1,10 @@
+{
+    "name": "Hopoo Feather",
+    "id": "Hopoo_Feather",
+    "desc": "Gain +1 (+1 per stack) maximum jump count .",
+    "notes": "The Hopoo Feather is a returning item in Risk of Rain 2. \nThe item grants the player 1 (+1 per stack) additional jump.  \n\n\n== Notes ==\nThe additional jump is not affected by  Wax Quail.\n  Engineer's   TR58 Carbonizer Turrets will not use Hopoo Feathers.\nJumping resets all momentum.\n\n\n== Tips ==\nThis item can benefit Survivors with low mobility, such as   Engineer and   Captain, enabling them to reach high places or dodge attacks that would otherwise be impossible.\nPlayers can use this item to cancel fall damage, by using the extra jump immediately before hitting the ground. This is especially relevant for Survivors who lack movement-related skills. This is not relevant for   Loader, who does not take fall damage at all.\n\n\n== Lore ==\n\u201c...Europan laws have cracked down heavily on poaching, with the intent to help the reemergence of the hopoo. Since then, the Greebokks Foundation has helped support hopoo conservation groups, substantially growing their population beyond the initial three that were recorded in recent years.\u201d\n\n- Europan Wildlife Guide\n\n\n== Version History ==\nPC Patch v1.1.1.2\nBug Fixes\nFixed repeated jumping animations not being able to interrupt themselves\nAnniversary Update\nMajor Content\nAdded New Lore Entry: Hopoo Feather\n\n\n== Trivia ==\nThe \"hopoo\" in the name is a reference to the developer of the same name, as well as Hopoo Games; the developers of both Risk of Rain games and Deadbolt.\nThe \"Greebokks Foundation\" mentioned in the logbook entry is a corruption of Gearbox Software, the publisher of Risk of Rain 2.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Hopoo_Feather",
+    "img_file": "Hopoo_Feather.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Uncommon\\Hopoo_Feather",
+    "rarity_raw": "Uncommon"
+}

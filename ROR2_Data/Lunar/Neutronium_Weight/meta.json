@@ -1,0 +1,10 @@
+{
+    "name": "Neutronium Weight",
+    "id": "Neutronium_Weight",
+    "desc": "Reduces your stats while in combat , but send this item to an enemy on hit. On death, this item will be sent to its holder's killer. Reduces damage by 30% (+10% per stack) , attack speed by 30% (+10% per stack) , movement speed by 30% (+10% per stack) , and armor by 35 (+15 per stack) .",
+    "notes": "The Neutronium Weight is an item in Risk of Rain 2, added in the Alloyed Collective expansion.\n\"Reduces your stats while in combat, but send this item to an enemy on hit. On death, this item will be sent to its holder's killer.\nReduces damage by 30% (+10% per stack), attack speed by 30% (+10% per stack), movement speed by 30% (+10% per stack), and armor by 35 (+15 per stack).\"\n\n\n== Notes ==\nThe Neutronium Weight will be sent to ANY killer on ANY team. This means that in addition to survivors, monsters and drones can receive the weight if it killed another character with a Neutronium Weight.\n\n\n== Lore ==\nMass.\n\nSimple, featureless, and bland. But required.\n\nWe take mass, and bring it into being.\n\nSpace-time bends around mass. We call this gravity.\n\nThe more mass, the stronger the pull of gravity.\n\nLesser beings may buckle under the weight. Even light may succumb to mass's pull.\n\nFascinating.\n\n\n== Version History ==\nAlloyed Collective\nAdded New Item: Neutronium Weight",
+    "url": "https://riskofrain2.wiki.gg/wiki/Neutronium_Weight",
+    "img_file": "Neutronium_Weight.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Lunar\\Neutronium_Weight",
+    "rarity_raw": "Lunar"
+}

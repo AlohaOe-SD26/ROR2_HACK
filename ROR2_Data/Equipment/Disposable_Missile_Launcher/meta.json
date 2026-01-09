@@ -1,0 +1,10 @@
+{
+    "name": "Disposable Missile Launcher",
+    "id": "Disposable_Missile_Launcher",
+    "desc": "Fire a swarm of 12 missiles that deal 12x300% damage .",
+    "notes": "The Disposable Missile Launcher is a returning equipment in Risk of Rain 2. \nWhen activated, the player launches a total of 12 missiles that deal 300% damage each.\nEach missile has a proc coefficient of 1.0.\n\n\n== Notes ==\nIf the player picks up a different equipment or activates   Retool as   MUL-T before all 12 missiles have fired, the Missile Launcher will keep firing until the backlog has caught up, potentially allowing for two equipment active at once.\n\n\n== Lore ==\n\u201cConsumers were shocked when a beloved game company released its latest cardboard assembly kit: a missile launcher.\u201d\n\n- The Saturn Reporter\n\n\n== Version History ==\nAnniversary Update\nMajor Content\nAdded New Lore Entry: Disposable Missile Launcher\n\n\n== Trivia ==\nThe logbook entry for this item is likely a reference to Nintendo's Labo brand of cardboard toys.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Disposable_Missile_Launcher",
+    "img_file": "Disposable_Missile_Launcher.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Equipment\\Disposable_Missile_Launcher",
+    "rarity_raw": "Equipment"
+}

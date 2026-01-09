@@ -1,0 +1,10 @@
+{
+    "name": "Molotov (6-Pack)",
+    "id": "Molotov__6_Pack",
+    "desc": "Throw 6 molotov cocktails that ignites enemies for 500% base damage . Each molotov leaves a burning area for 200% damage per second .",
+    "notes": "The Molotov (6-Pack) is an equipment in Risk of Rain 2, added in the Survivors of the Void expansion.\nWhen activated, it launches a large molotov projectile (which is affected by gravity) which explodes upon impact or after 2 seconds, splitting into 6 smaller molotovs with the same lifetime. However, the smaller projectiles explode only upon impact with terrain, bouncing off from any enemies in their path. Both the large and small projectiles deal 250% damage with a proc coefficient of 1.0 in a 7m radius with no falloff, while inflicting {  ignite enemies. The smaller projectiles leave behind lingering fire pools that deal 100% damage every 0.5 seconds with a proc coefficient of 0.5. The fire pools last for 7 seconds.\n\n\n== Tips ==\nCorrection: The in-game description of 500% damage is incorrect.\nThe  Ignition Tank will boost this equipment's power significantly.\n\n\n== Lore ==\nOrder: Ethanol Bottle (32 oz.), 6 Pack\n\nTracking Number: 81******\n\nEstimated Delivery: 05/8/2058\n\nShipping Method: Priority\n\nShipping Address: Teromere Manor, Privet Road, Mars\nShipping Details: Let our friends inside know that we're coming over for drinks on the 16th of June. It'll be a hell of a party, they should probably hit the road before things get too out of hand.\n\n\n== Version History ==\nSurvivors of the Void Update\n(Undocumented) Added New Item: Molotov (6-Pack)\n\n\n== Trivia ==\nThe model for the large projectile depicts a group of 5 molotovs, even though it breaks up to 6 smaller ones.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Molotov_(6-Pack)",
+    "img_file": "Molotov__6_Pack.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Equipment\\Molotov__6_Pack",
+    "rarity_raw": "Equipment"
+}

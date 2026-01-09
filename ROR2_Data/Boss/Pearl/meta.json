@@ -1,0 +1,10 @@
+{
+    "name": "Pearl",
+    "id": "Pearl",
+    "desc": "Increases maximum health by 10% (+10% per stack) .",
+    "notes": "The Pearl is a yellow item introduced in the Hidden Realms Update.\nIt can only be obtained from a Cleansing Pool in exchange for a lunar item, and increases the holder's maximum health by 10% (+10% per stack).\nThe Pearl has a drop chance of 80%. Its rare counterpart is the  Irradiant Pearl, which increases all other stats in addition to maximum health.\n\n\n== Notes ==\nThe  Recycler cannot be used to transform other boss items into a Pearl, or vice versa.\nThough a Shrine of Order can be used to fulfill the same purpose.\nPearls cannot be obtained while the Artifact of Command is active. Cleansing Pools do not spawn, and neither the Pearl or the Irradiant Pearl can be selected from Yellow Command Essences.\nWhile Pearls can be scrapped with a Scrapper for  Yellow Item Scraps and are the same rarity as other boss items, Yellow Scrap cannot be used with the Cleansing Pool, and Pearls will never be offered by an Overgrown 3D Printer.\nIncreasing maximum health is not considered healing, so picking up a Pearl does not fail the Naturopath challenge.\n\n\n== Lore ==\nHis influence is dark.\n\nI do not blame you for your curiosity\u2026 but cleanse yourself of it immediately. It will ruin you \u2013 and all you care about.\n\n\n== Version History ==\nAnniversary Update\nMajor Content\nAdded New Lore Entry: Pearl\nEarly Access Hidden Realms Content Update\nMajor Content\nAdded New Boss Item: Pearl",
+    "url": "https://riskofrain2.wiki.gg/wiki/Pearl",
+    "img_file": "Pearl.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Pearl",
+    "rarity_raw": "Boss"
+}

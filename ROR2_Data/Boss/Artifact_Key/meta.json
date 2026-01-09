@@ -1,0 +1,10 @@
+{
+    "name": "Artifact Key",
+    "id": "Artifact_Key",
+    "desc": "A stone shard with immense power.",
+    "notes": "The Artifact Key is a boss item in Risk of Rain 2. It is randomly dropped by enemies in Bulwark's Ambry during an Artifact Trial. They are used to interact with and damage the   Artifact Reliquary, which is otherwise completely impervious to normal damage. When used, all Artifact Keys in the player's inventory, as well as those still on the field, are consumed, preventing the player from stockpiling them.\nThe Artifact Key's drop chance is not affected by the  57 Leaf Clover or  Purity, and it will drop even if the Artifact of Sacrifice is not enabled.\nIt is one of few items that the Artifact of Command has no effect on. Though a Yellow Command Essence will drop, it cannot be transformed into any item except the Artifact Key.\n\n\n== Lore ==\nThe key is incredibly simple. A stone crescent, with little discernable detail to the naked eye. But if one looks closer, with a sight beyond sight, they may notice the patterns inscribed on the key\u2019s being. The patterns tell many things:\n\nThe key\u2019s function: to unlock a lost trove of abandoned treasure.\n\nThe key\u2019s creators: two brothers, one composed of ambition and the other compassion.\n\nThe key\u2019s hopes: infused into the key, deep within its core, is a memory of better times, and the hope that one day, perhaps things could be better again.\n\nThe key\u2019s reality: the bitter realization that such a reality exists only in the past.\n\n\n== Version History ==\nAnniversary Update\nMajor Content\nAdded New Lore Entry: Artifact Key\nPC Patch v1.0.1.1 (Build ID No.5440050)\nBug Fixes\nRemove luck from Artifact Key drop calculation since it can cause soft-locks with  Purity\nEarly Access Artifacts Content Update\nMajor Content\nAdded New Boss Item: ???",
+    "url": "https://riskofrain2.wiki.gg/wiki/Artifact_Key",
+    "img_file": "Artifact_Key.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Artifact_Key",
+    "rarity_raw": "Boss"
+}

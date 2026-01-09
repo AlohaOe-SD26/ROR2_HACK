@@ -1,0 +1,10 @@
+{
+    "name": "Unstable Tesla Coil",
+    "id": "Unstable_Tesla_Coil",
+    "desc": "Fire out lightning that hits 3 (+2 per stack) enemies for 200% base damage every 0.5s . The Tesla Coil switches off every 10 seconds .",
+    "notes": "The Unstable Tesla Coil is a returning item in Risk of Rain 2. It is unlocked and starts appearing in runs after completing the Macho Challenge.\nThe item switches itself on and off every 10 seconds. While it is active, the holder gets the   Tesla Field buff, which makes them fire up to 3 (+2 per stack) lightning bolts at enemies every 0.5 seconds in a 35m radius. Each lightning bolt ignores terrain and deals 200% damage with a proc coefficient of 0.3.\n\n\n== Tips ==\nThis item is most effective on melee Survivors who stay close to enemies, such as   Loader and   Mercenary.\nUmbra of players that are equipped with the Unstable Tesla Coil are exceedingly dangerous and will swiftly kill any players that are even a moderate distance away.\n\n\n== Lore ==\nTesla Presentation Software v1.14\n\nPowering on...\n\n10...\n\nIssuing welcome statement...\n\n9...\n\nWelcome one and all!\n\n8...\n\nPlease take a seat.\n\n7...\n\nMake sure those behind you can see.\n\n6...\n\nThe presentation will start shortly.\n\n5...\n\nPlease obey the staff for your safety.\n\n4...\n\nInitiating room mood lighting...\n\n3...\n\nGet ready to behold...\n\n2...\n\nThe marvelous wonders...\n\n1...\n\nOf electricity!\n\nPower anomaly detected...\n\nInitiating reboot procedure in 10...\n\n\n== Version History ==\nPC Patch v1.0.1.1 (Build ID No.5440050)\nGameplay Changes\nSPOILERS! Final Boss, Last Phase. SPOILERS!\nAdd visual effect to Tesla Coil being active\nEarly Access Content Update 5\nMajor Content\nAdded New Item Lore Entry: Unstable Tesla Coil",
+    "url": "https://riskofrain2.wiki.gg/wiki/Unstable_Tesla_Coil",
+    "img_file": "Unstable_Tesla_Coil.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Legendary\\Unstable_Tesla_Coil",
+    "rarity_raw": "Legendary"
+}
