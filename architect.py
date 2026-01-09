@@ -1,5 +1,5 @@
-# [Risk of Rain 2 Fun House] - v27.0 (The Crypto-Miner Release)
-# Description: Smart Description Parsing, Heuristic Data Mining, Strict Lunar Sorting.
+# [Risk of Rain 2 Fun House] - v27.1 (The Rosetta Stone Release)
+# Description: Internal ID Translation Map, Console Command Fixes, Full Item Library.
 
 import sys
 import os
@@ -63,17 +63,16 @@ from inputs import get_gamepad
 
 # --- 2. CONFIG ---
 APP_NAME = "Risk of Rain 2 Fun House"
-VERSION = "27.0.0"
+VERSION = "27.1.0"
 BASE_DIR = os.getcwd()
 DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
 PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
 CACHE_FILE = os.path.join(DATA_DIR, "master_cache.json")
 LOG_DIR = os.path.join(BASE_DIR, "logs")
-# URLs
 WIKI_BASE = "https://riskofrain2.wiki.gg"
 WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
 WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-HEADERS = {"User-Agent": "ROR2-FunHouse/27.0 (Data Miner)"}
+HEADERS = {"User-Agent": "ROR2-FunHouse/27.1 (Rosetta)"}
 
 # Repo Config
 REPO_API_URL = "https://api.github.com/repos/AlohaOe-SD26/ROR2_HACK/contents/ROR2_Data/Profiles"
@@ -82,20 +81,89 @@ RAW_URL_BASE = "https://raw.githubusercontent.com/AlohaOe-SD26/ROR2_HACK/main/RO
 for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: os.makedirs(d, exist_ok=True)
 logging.basicConfig(filename=os.path.join(LOG_DIR, "runtime.log"), level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
-# --- 3. COLOR & DB MAPS ---
+# --- 3. DATABASE MAPPINGS ---
+
+# 3A. VISUALS (VIBES)
 RARITY_VIBES = {
-    "Common": "#FFFFFF",          
-    "Uncommon": "#72B045",        
-    "Legendary": "#E64843",       
-    "Boss": "#E5C962",            
-    "Lunar": "#3478C7",           
-    "Void": "#884C9E",            
-    "Equipment": "#FF8000",       
-    "Lunar Equipment": "#3478C7", 
-    "Meal": "#F38D33",            
-    "Untiered": "#606060"         
+    "Common": "#FFFFFF", "Uncommon": "#72B045", "Legendary": "#E64843",
+    "Boss": "#E5C962", "Lunar": "#3478C7", "Void": "#884C9E",
+    "Equipment": "#FF8000", "Lunar Equipment": "#3478C7",
+    "Meal": "#F38D33", "Untiered": "#606060"
 }
 
+# 3B. THE ROSETTA STONE (Wiki Name -> Console ID)
+INTERNAL_ID_MAP = {
+    # Common
+    "Soldier's Syringe": "Syringe", "Tougher Times": "Bear", "Monster Tooth": "Tooth",
+    "Lens-Maker's Glasses": "CritGlasses", "Paul's Goat Hoof": "Hoof", "Bustling Fungus": "Mushroom",
+    "Crowbar": "Crowbar", "Tri-Tip Dagger": "BleedOnHit", "Warbanner": "WardOnLevel",
+    "Cautious Slug": "HealWhileSafe", "Personal Shield Generator": "PersonalShield", "Medkit": "Medkit",
+    "Gasoline": "IgniteOnKill", "Stun Grenade": "StunChanceOnHit", "Bundle of Fireworks": "Firework",
+    "Energy Drink": "SprintBonus", "Backup Magazine": "SecondarySkillMagazine", "Sticky Bomb": "StickyBomb",
+    "Rusted Key": "TreasureCache", "Armor-Piercing Rounds": "BossDamageBonus", "Repulsion Armor Plate": "ArmorPlate",
+    "Topaz Brooch": "BarrierOnKill", "Mocha": "AttackSpeedAndMoveSpeed", "Power Elixir": "HealingPotion",
+    "Delicate Watch": "FragileDamageBonus", "Oddly-shaped Opal": "OutOfCombatArmor", "Roll of Pennies": "GoldOnHurt",
+    
+    # Uncommon
+    "AtG Missile Mk. 1": "Missile", "Will-o'-the-wisp": "ExplodeOnDeath", "Hopoo Feather": "Feather",
+    "Ukulele": "ChainLightning", "Leeching Seed": "Seed", "Predatory Instincts": "AttackSpeedOnCrit",
+    "Red Whip": "SprintOutOfCombat", "Old War Stealthkit": "Phasing", "Harvester's Scythe": "HealOnCrit",
+    "Fuel Cell": "EquipmentMagazine", "Infusion": "Infusion", "Bandolier": "Bandolier",
+    "Berzerker's Pauldron": "WarCryOnMultiKill", "Rose Buckler": "SprintArmor", "Runald's Band": "IceRing",
+    "Kjaro's Band": "FireRing", "Chronobauble": "SlowOnHit", "Wax Quail": "JumpBoost",
+    "Squid Polyp": "Squid", "Death Mark": "DeathMark", "Hunter's Harpoon": "MoveSpeedOnKill",
+    "Ignition Tank": "StrengthenBurn", "Shuriken": "PrimarySkillShuriken", "Regenerating Scrap": "RegeneratingScrap",
+    "Ghor's Tome": "BonusGoldPackOnKill", "Lepton Daisy": "TPHealingNova", "Razorwire": "Thorns",
+    
+    # Legendary
+    "Brilliant Behemoth": "Behemoth", "Ceremonial Dagger": "Dagger", "Frost Relic": "Icicle",
+    "Happiest Mask": "GhostOnKill", "H3AD-5T v2": "FallBoots", "N'kuhana's Opinion": "NovaOnHeal",
+    "Tesla Coil": "ShockNearby", "57 Leaf Clover": "Clover", "Sentient Meat Hook": "BounceNearby",
+    "Alien Head": "AlienHead", "Soulbound Catalyst": "Talisman", "Dio's Best Friend": "ExtraLife",
+    "Hardlight Afterburner": "UtilitySkillMagazine", "Wake of Vultures": "HeadHunter", "Brainstalks": "KillEliteFrenzy",
+    "Resonance Disc": "LaserTurbine", "Interstellar Desk Plant": "Plant", "Ben's Raincoat": "ImmuneToDebuff",
+    "Pocket I.C.B.M.": "MoreMissile", "Spare Drone Parts": "DroneWeapons", "Symbiotic Scorpion": "PermanentDebuffOnHit",
+    "Aegis": "BarrierOnOverHeal", "Shattering Justice": "ArmorReductionOnHit", "Unstable Tesla Coil": "ShockNearby",
+    "Bottled Chaos": "RandomEquipmentTrigger",
+    
+    # Boss
+    "Titanic Knurl": "Knurl", "Queen's Gland": "BeetleGland", "Little Disciple": "SprintWisp",
+    "Genesis Loop": "NovaOnLowHealth", "Molten Perforator": "FireballsOnHit", "Shatterspleen": "BleedOnHitAndExplode",
+    "Mired Urn": "SiphonOnLowHealth", "Charged Perforator": "LightningStrikeOnHit", "Empathy Cores": "RoboBallBuddy",
+    "Planula": "ParentEgg", "Defense Nucleus": "MinorConstructOnKill",
+    
+    # Lunar (Blue)
+    "Shaped Glass": "LunarDagger", "Brittle Crown": "GoldOnHit", "Transcendence": "ShieldOnly",
+    "Corpsebloom": "RepeatHeal", "Gesture of the Drowned": "AutoCastEquipment", "Focused Convergence": "FocusConvergence",
+    "Purity": "LunarBadLuck", "Light Flux Pauldron": "HalfAttackSpeedHalfCooldowns", "Stone Flux Pauldron": "HalfSpeedDoubleHealth",
+    "Eulogy Zero": "RandomlyLunar", "Egocentrism": "LunarSun", "Mercurial Rachis": "RandomDamageZone",
+    "Beads of Fealty": "LunarTrinket", "Defiant Gouge": "LunarSecondaryReplacement", # Wait, Gouge is shrine spawn? Yes.
+    
+    # Void (Purple)
+    "Safer Spaces": "BearVoid", "Needletick": "BleedOnHitVoid", "Lost Seer's Lenses": "CritGlassesVoid",
+    "Weeping Fungus": "MushroomVoid", "Encrusted Key": "TreasureCacheVoid", "Polylute": "ChainLightningVoid",
+    "Plasma Shrimp": "MissileVoid", "Tentabauble": "SlowOnHitVoid", "Benthic Bloom": "CloverVoid",
+    "Singularity Band": "ElementalRingVoid", "Pluripotent Larva": "VoidMan", "Lysate Cell": "EquipmentMagazineVoid",
+    "Voidsent Flame": "ExplodeOnDeathVoid", "Zoeea": "VoidMegaCrabItem",
+    
+    # Equipment (Orange)
+    "Disposable Missile Launcher": "CommandMissile", "Foreign Fruit": "Fruit", "Primordial Cube": "Blackhole",
+    "Ocular HUD": "CritOnUse", "The Back-up": "DroneBackup", "Preon Accumulator": "BFG",
+    "Milky Chrysalis": "Jetpack", "Royal Capacitor": "Lightning", "Gnarled Woodsprite": "PassiveHealing",
+    "The Crowdfunder": "GoldGat", "Blast Shower": "Cleanse", "Volcanic Egg": "FireBallDash",
+    "Jade Elephant": "GainArmor", "Radar Scanner": "Scanner", "Recycler": "Recycle",
+    "Super Massive Leech": "Leech", "Gorag's Opus": "TeamWarCry", "Forgive Me Please": "DeathProjectile",
+    
+    # Lunar Equipment (Blue)
+    "Spinel Tonic": "Tonic", "Effigy of Grief": "CripplingWard", "Glowing Meteorite": "Meteor",
+    "Helfire Tincture": "BurnNearby",
+    
+    # Elite Aspects
+    "Ifrit's Distinction": "AffixRed", "Her Biting Embrace": "AffixWhite", "Silence Between Two Strikes": "AffixBlue",
+    "N'kuhana's Retort": "AffixPoison", "Spectral Circlet": "AffixHaunted", "Shared Design": "AffixLunar"
+}
+
+# 3C. ENTITY DBS
 BOSS_DB = {
     "Beetle Queen": "BeetleQueen2Body", "Clay Dunestrider": "ClayBossBody", "Stone Titan": "TitanBody",
     "Wandering Vagrant": "VagrantBody", "Magma Worm": "MagmaWormBody", "Overloading Worm": "ElectricWormBody",
@@ -306,29 +374,21 @@ class WikiSyncEngine:
                         # --- SMART DESCRIPTION SELECTOR ---
                         brief_desc = "No description."
                         candidates = []
-                        
-                        # Skip Col 0 (Image)
                         for col in cols[1:]:
                             text = col.get_text(" ", strip=True)
-                            
-                            # Blocklist (Filter out Stacking Types and Garbage)
                             lower_text = text.lower()
                             if lower_text in ["linear", "hyperbolic", "exponential", "none", "special", "standard"]: continue
                             if text in ["Common", "Uncommon", "Legendary", "Boss", "Lunar", "Void", "Equipment"]: continue
-                            if text == name: continue # Skip if it matches name
-                            if len(text) < 10: continue # Too short
+                            if text == name: continue
+                            if len(text) < 10: continue
                             
-                            # Heuristic Scoring
                             score = len(text)
                             if "%" in text: score += 50
                             if "damage" in lower_text: score += 20
                             if "heal" in lower_text: score += 20
                             if "cooldown" in lower_text: score += 20
-                            if "stack" in lower_text: score += 20
-                            
                             candidates.append((score, text))
                         
-                        # Pick best candidate
                         if candidates:
                             candidates.sort(key=lambda x: x[0], reverse=True)
                             brief_desc = candidates[0][1]
@@ -350,10 +410,14 @@ class WikiSyncEngine:
                         item_dir = os.path.join(DATA_DIR, self.safe_name(target_rarity), safe_n)
                         if not os.path.exists(item_dir): os.makedirs(item_dir)
                         
+                        # --- ROSETTA STONE TRANSLATION ---
+                        # Look up correct ID, default to safe_n if unknown
+                        console_id = INTERNAL_ID_MAP.get(name, safe_n)
+                        
                         item_data = {
                             "name": name,
-                            "id": safe_n, 
-                            "desc": brief_desc, # THE FIXED BRIEF DESC
+                            "id": console_id, # THE FIX IS HERE
+                            "desc": brief_desc, 
                             "notes": full_notes, 
                             "url": href,
                             "img_file": f"{safe_n}.png",
