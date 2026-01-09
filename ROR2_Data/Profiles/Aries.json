@@ -1,0 +1,20 @@
+{
+    "items": {},
+    "meta": {
+        "steam_user": "Default / Auto",
+        "hotkeys": {
+            "Architect": {
+                "mode": "Controller",
+                "key": "BTN_SOUTH"
+            },
+            "Boss": {
+                "mode": "Keyboard",
+                "key": "f6"
+            },
+            "Mob": {
+                "mode": "Keyboard",
+                "key": "f7"
+            }
+        }
+    }
+}
