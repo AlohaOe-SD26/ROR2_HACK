@@ -1,5 +1,5 @@
-# [ROR2 Dungeon Master] - v29.1 (The Spacebar Release)
-# Description: Hotkey Defaults to Space, Advanced Quantity Logic, Bulk Selectors, Mod Loader Integration.
+# [ROR2 Dungeon Master] - v29.2 (Final Stable)
+# Description: Fixed List Loading, Default Spacebar, Bulk Tools, Mod Integration.
 
 import sys
 import os
@@ -73,7 +73,7 @@ try:
 
     # --- 2. CONFIG ---
     APP_NAME = "ROR2 Dungeon Master"
-    VERSION = "29.1.0"
+    VERSION = "29.2.0"
     BASE_DIR = os.getcwd()
     DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
     PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -84,7 +84,7 @@ try:
     WIKI_BASE = "https://riskofrain2.wiki.gg"
     WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
     WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-    HEADERS = {"User-Agent": "ROR2-FunHouse/29.1 (Spacebar)"}
+    HEADERS = {"User-Agent": "ROR2-FunHouse/29.2 (DungeonMaster)"}
 
     for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: 
         os.makedirs(d, exist_ok=True)
@@ -494,6 +494,29 @@ try:
             self.l_itm.configure(text="Download Stopped / Failed.", text_color="red"); self.btn.configure(state="normal", text="RETRY")
         def finish(self): self.active = False; self.after_cancel(self.timer_id) if self.timer_id else None; self.withdraw(); self.destroy(); self.complete_cb()
 
+    class ProfileManager:
+        @staticmethod
+        def get_profiles():
+            files = [f.replace(".json", "") for f in os.listdir(PROFILE_DIR) if f.endswith(".json")]
+            if "Default" not in files: files.insert(0, "Default")
+            return sorted(files)
+        @staticmethod
+        def save(name, data, metadata=None):
+            clean = {
+                "items": {k: {"c": v["chk"].get(), "q": v["qty"].get()} for k,v in data.items() if v["chk"].get() or int(v["qty"].get())>0},
+                "meta": metadata if metadata else {}
+            }
+            with open(os.path.join(PROFILE_DIR, f"{name}.json"), 'w') as f: json.dump(clean, f, indent=4)
+        @staticmethod
+        def load(name):
+            p = os.path.join(PROFILE_DIR, f"{name}.json")
+            if os.path.exists(p):
+                with open(p, 'r') as f: 
+                    d = json.load(f)
+                    if "items" not in d: return {"items": d, "meta": {}}
+                    return d
+            return {"items": {}, "meta": {}}
+
     class ProfileConsole(ctk.CTkToplevel):
         def __init__(self, parent, cb_load, cb_save, curr):
             super().__init__(parent); self.title("Profiles"); center_window(self, 600, 500); self.attributes("-topmost", True)
@@ -560,6 +583,7 @@ try:
             self.log_watcher = LogWatcher(); self.log_watcher.start_watching()
             self.steam_user = ctk.StringVar(value="Default / Auto")
             self.cat_f = {}; self.act_c = None
+            self.loaded_tabs = set()
             
             # Hotkey Logic
             self.injecting = False # KILL SWITCH
@@ -670,7 +694,8 @@ try:
             
             self.seg_qty = ctk.CTkSegmentedButton(r2, values=["1", "5", "10", "Custom"], variable=self.qty_mode, command=q_change)
             self.seg_qty.pack(side="left", padx=5)
-            self.ent_custom = ctk.CTkEntry(r2, textvariable=self.qty_custom_val, width=50) # Hidden by default logic
+            self.ent_custom = ctk.CTkEntry(r2, textvariable=self.qty_custom_val, width=50) 
+            self.ent_custom.insert(0, "10") # Default value for Custom Entry
             
             ctk.CTkButton(r2, text="APPLY", width=60, fg_color="#444", command=self._apply_qty).pack(side="left", padx=10)
 
@@ -771,22 +796,26 @@ try:
 
         # --- NEW UI LOGIC ---
         def _sel_all(self):
-            for k, v in self.sel_i.items():
-                # Only select items currently visible in the active tab would be complex, 
-                # so we select ALL loaded items in the current dict. 
-                # To be precise to the tab, we'd need to filter by act_c
-                if self.act_c:
-                    # Check if item K belongs to active category
-                    pass # Optimization for later. For now, check all.
-                v["chk"].set(True)
+            if not self.act_c: return
+            cat_items = self.data.db.get(self.act_c, [])
+            for item in cat_items:
+                if item["id"] in self.sel_i:
+                    self.sel_i[item["id"]]["chk"].set(True)
         
         def _sel_none(self):
-            for v in self.sel_i.values(): v["chk"].set(False)
+            if not self.act_c: return
+            cat_items = self.data.db.get(self.act_c, [])
+            for item in cat_items:
+                if item["id"] in self.sel_i:
+                    self.sel_i[item["id"]]["chk"].set(False)
             
         def _sel_reset(self):
-            for v in self.sel_i.values():
-                v["chk"].set(False)
-                v["qty"].set("0")
+            if not self.act_c: return
+            cat_items = self.data.db.get(self.act_c, [])
+            for item in cat_items:
+                if item["id"] in self.sel_i:
+                    self.sel_i[item["id"]]["chk"].set(False)
+                    self.sel_i[item["id"]]["qty"].set("0")
 
         def _apply_qty(self):
             mode = self.qty_mode.get()
@@ -905,16 +934,14 @@ try:
                 c = self.item_tabs.get(); 
                 if c == self.act_c: return
                 self.act_c = c
-                if len(self.cat_f[c].winfo_children()) == 1: self._lb(c)
+                if c not in self.loaded_tabs:
+                    self._lb(c)
+                    self.loaded_tabs.add(c)
             except: pass
         
         def _lb(self, c):
             items = self.data.db.get(c, [])
-            current_loaded = len(self.cat_f[c].winfo_children()) - 1
-            if current_loaded >= len(items): return
-            end = min(current_loaded + 15, len(items))
-            for i in items[current_loaded:end]: self._mk(self.cat_f[c], i)
-            if self.cat_f[c]._parent_canvas.yview()[1] < 1.0: self.after(100, lambda: self._lb(c))
+            for i in items: self._mk(self.cat_f[c], i)
 
         def _mk(self, p, i):
             c = ctk.CTkFrame(p, fg_color="#2B2B2B", border_width=1, border_color="#3A3A3A"); c.pack(fill="x", pady=4, padx=5)
@@ -923,7 +950,7 @@ try:
             l.bind("<Button-1>", lambda e: DetailsWindow(self, i, self.data))
             info = ctk.CTkFrame(c, fg_color="transparent"); info.pack(side="left", fill="both", expand=True)
             ctk.CTkLabel(info, text=i['name'], font=("Arial", 14, "bold"), anchor="w").pack(fill="x")
-            ctk.CTkLabel(info, text=i['desc'][:80]+"...", text_color="gray", font=("Arial", 11), anchor="w").pack(fill="x")
+            ctk.CTkLabel(info, text=i.get('desc', 'No Desc')[:80]+"...", text_color="gray", font=("Arial", 11), anchor="w").pack(fill="x")
             ctrl = ctk.CTkFrame(c, fg_color="transparent"); ctrl.pack(side="right", padx=10)
             chk = ctk.BooleanVar(); qty = ctk.StringVar(value="0")
             ctk.CTkCheckBox(ctrl, text="", variable=chk, width=0).pack(side="top", pady=2)
@@ -952,8 +979,8 @@ try:
             if self.run: self.after(50, self._pl)
         def _lpl(self):
             try:
-                if self.main_tabs.get() == "Architect" and self.act_c:
-                    if self.cat_f[self.act_c]._parent_canvas.yview()[1] > 0.9: self._lb(self.act_c)
+                # Lazy loading no longer strictly needed but kept for responsiveness
+                pass
             except: pass
             if self.run: self.after(200, self._lpl)
         def _s10(self): 
@@ -975,6 +1002,7 @@ try:
                 if v["chk"].get():
                     try: 
                         rarity = "Common"
+                        # Lookup rarity map
                         for cat_name, cat_items in self.data.db.items():
                             found = False
                             for it in cat_items:
