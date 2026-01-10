@@ -1,9 +1,10 @@
-# [ROR2 Dungeon Master] - v29.2 (Final Stable)
-# Description: Fixed List Loading, Default Spacebar, Bulk Tools, Mod Integration.
+# [ROR2 Dungeon Master] - v30.0 (The Chaos Theory Release)
+# Features: Randomizer Tab, Smart Hotkey Detection, God Mode Logic, Full Database.
 
 import sys
 import os
 import traceback
+import random # Required for Chaos Mode
 
 # --- CRASH HANDLER ---
 def log_crash(e):
@@ -73,7 +74,7 @@ try:
 
     # --- 2. CONFIG ---
     APP_NAME = "ROR2 Dungeon Master"
-    VERSION = "29.2.0"
+    VERSION = "30.0.0"
     BASE_DIR = os.getcwd()
     DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
     PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -84,7 +85,7 @@ try:
     WIKI_BASE = "https://riskofrain2.wiki.gg"
     WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
     WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-    HEADERS = {"User-Agent": "ROR2-FunHouse/29.2 (DungeonMaster)"}
+    HEADERS = {"User-Agent": "ROR2-FunHouse/30.0 (Chaos)"}
 
     for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: 
         os.makedirs(d, exist_ok=True)
@@ -589,6 +590,7 @@ try:
             self.injecting = False # KILL SWITCH
             self.hk_cfg = {
                 "Architect": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="space")},
+                "Randomizer": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f8")},
                 "Boss": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f6")},
                 "Mob": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f7")}
             }
@@ -599,6 +601,15 @@ try:
             self.smart_chk_vars = {"Boss": ctk.BooleanVar(value=False), "Mob": ctk.BooleanVar(value=False)}
             self.interval_vars = {"Boss": ctk.StringVar(value="30"), "Mob": ctk.StringVar(value="5")}
             
+            # Randomizer State
+            self.rnd_vars = {
+                "Common": ctk.BooleanVar(value=True), "Uncommon": ctk.BooleanVar(value=True),
+                "Legendary": ctk.BooleanVar(value=True), "Boss": ctk.BooleanVar(value=True),
+                "Lunar": ctk.BooleanVar(value=True), "Void": ctk.BooleanVar(value=True)
+            }
+            self.rnd_mode = ctk.StringVar(value="Standard") # Standard vs God
+            self.rnd_count = ctk.StringVar(value="50")
+            
             # Dropdowns
             boss_keys = list(BOSS_DB.keys()); mob_keys = list(MOB_DB.keys())
             self.sel_boss = ctk.StringVar(value=boss_keys[0] if boss_keys else "")
@@ -608,7 +619,7 @@ try:
             self.ent_team_mob = ctk.StringVar(value="Monster (Enemy)"); self.ent_count_mob = ctk.StringVar(value="1")
             self.dir_disabled = False
 
-            # Architect State (New Quantity Controls)
+            # Architect State
             self.qty_mode = ctk.StringVar(value="10")
             self.qty_custom_val = ctk.StringVar(value="10")
 
@@ -645,9 +656,9 @@ try:
             
             ctk.CTkLabel(sb, text="ACTIVE HOTKEYS", font=("Arial", 12, "bold")).pack(pady=(20,5))
             self.hk_labels = {}
-            for k in ["Architect", "Boss", "Mob"]:
+            for k in ["Architect", "Randomizer", "Boss", "Mob"]:
                 f = ctk.CTkFrame(sb, fg_color="transparent"); f.pack(fill="x", padx=10)
-                ctk.CTkLabel(f, text=f"{k}:", width=60, anchor="w").pack(side="left")
+                ctk.CTkLabel(f, text=f"{k}:", width=80, anchor="w").pack(side="left")
                 l = ctk.CTkLabel(f, text="...", text_color="yellow", anchor="w"); l.pack(side="left"); self.hk_labels[k] = l
             self.conflict_lbl = ctk.CTkLabel(sb, text="", text_color="red", font=("Arial", 10, "bold")); self.conflict_lbl.pack(pady=5)
             
@@ -675,40 +686,58 @@ try:
             t_arch = self.main_tabs.tab("Architect")
             self._build_hotkey_ui(t_arch, "Architect", "Inject Selected Items")
             
-            # Quantity Control Panel (Redesigned)
             qc = ctk.CTkFrame(t_arch, fg_color="transparent"); qc.pack(fill="x", padx=10, pady=5)
-            
-            # Row 1: Bulk Selectors
             r1 = ctk.CTkFrame(qc, fg_color="transparent"); r1.pack(fill="x", pady=5)
             ctk.CTkButton(r1, text="ALL", width=60, command=self._sel_all).pack(side="left", padx=5)
             ctk.CTkButton(r1, text="NONE", width=60, command=self._sel_none).pack(side="left", padx=5)
             ctk.CTkButton(r1, text="RESET", width=60, fg_color="red", command=self._sel_reset).pack(side="right", padx=5)
-            
-            # Row 2: Quantity Setter
             r2 = ctk.CTkFrame(qc, fg_color="transparent"); r2.pack(fill="x", pady=5)
             ctk.CTkLabel(r2, text="Set Selected To:").pack(side="left", padx=5)
-            
             def q_change(val): 
                 if val == "Custom": self.ent_custom.pack(side="left", padx=5)
                 else: self.ent_custom.pack_forget()
-            
             self.seg_qty = ctk.CTkSegmentedButton(r2, values=["1", "5", "10", "Custom"], variable=self.qty_mode, command=q_change)
             self.seg_qty.pack(side="left", padx=5)
-            self.ent_custom = ctk.CTkEntry(r2, textvariable=self.qty_custom_val, width=50) 
-            self.ent_custom.insert(0, "10") # Default value for Custom Entry
-            
+            self.ent_custom = ctk.CTkEntry(r2, textvariable=self.qty_custom_val, width=50); self.ent_custom.insert(0, "10")
             ctk.CTkButton(r2, text="APPLY", width=60, fg_color="#444", command=self._apply_qty).pack(side="left", padx=10)
 
             self.item_tabs = ctk.CTkTabview(t_arch, command=self._tc); self.item_tabs.pack(fill="both", expand=True)
             rarity_order = ["Common", "Uncommon", "Legendary", "Boss", "Lunar", "Void", "Equipment", "Lunar Equipment", "Meal"]
             sorted_cats = sorted(self.data.db.keys(), key=lambda x: rarity_order.index(x) if x in rarity_order else 99)
-            
             for c in sorted_cats:
                 self.item_tabs.add(c)
                 f = ctk.CTkScrollableFrame(self.item_tabs.tab(c))
                 f.pack(fill="both", expand=True)
                 self.cat_f[c] = f
                 ctk.CTkFrame(f, height=5, fg_color=RARITY_VIBES.get(c, "#333")).pack(fill="x", pady=(0,5))
+
+            # RANDOMIZER TAB
+            self.main_tabs.add("Randomizer")
+            t_rnd = self.main_tabs.tab("Randomizer")
+            self._build_hotkey_ui(t_rnd, "Randomizer", "Execute Chaos")
+            
+            rf = ctk.CTkFrame(t_rnd); rf.pack(fill="both", expand=True, padx=20, pady=20)
+            ctk.CTkLabel(rf, text="CHAOS SETTINGS", font=("Impact", 24)).pack(pady=10)
+            
+            # Logic Switch
+            ctk.CTkLabel(rf, text="Distribution Logic:").pack(pady=(10,5))
+            ctk.CTkSegmentedButton(rf, values=["Standard", "God Mode"], variable=self.rnd_mode).pack(pady=5)
+            ctk.CTkLabel(rf, text="(Standard = Chest Odds | God Mode = Equal Tier Chance)", text_color="gray", font=("Arial", 10)).pack()
+            
+            # Rarities
+            ctk.CTkLabel(rf, text="Allowed Rarities:", font=("Arial", 14, "bold")).pack(pady=(20,5))
+            rg = ctk.CTkFrame(rf, fg_color="transparent"); rg.pack()
+            r_keys = list(self.rnd_vars.keys())
+            for i, k in enumerate(r_keys):
+                c = ctk.CTkCheckBox(rg, text=k, variable=self.rnd_vars[k], fg_color=RARITY_VIBES.get(k, "#FFF"))
+                c.grid(row=i//3, column=i%3, padx=10, pady=10, sticky="w")
+            
+            # Count
+            cf = ctk.CTkFrame(rf, fg_color="transparent"); cf.pack(pady=20)
+            ctk.CTkLabel(cf, text="Total Items to Inject:").pack(side="left", padx=10)
+            ctk.CTkEntry(cf, textvariable=self.rnd_count, width=60).pack(side="left")
+            
+            ctk.CTkButton(rf, text="EXECUTE CHAOS", height=50, width=200, fg_color="darkred", command=self._exec_randomizer).pack(pady=20)
 
             # DIRECTOR TAB
             self.main_tabs.add("Director")
@@ -725,28 +754,36 @@ try:
         def _build_hotkey_ui(self, parent, tab_key, action_desc):
             f = ctk.CTkFrame(parent, fg_color="transparent"); f.pack(fill="x", padx=5, pady=5)
             ctk.CTkLabel(f, text=f"Hotkey ({action_desc}):", font=("Arial", 11, "bold")).pack(side="left")
-            mode_var = self.hk_cfg[tab_key]["mode"]; key_var = self.hk_cfg[tab_key]["key"]
-            seg = ctk.CTkSegmentedButton(f, values=["Keyboard", "Controller"], variable=mode_var, command=lambda x: self._update_hk_summary())
-            seg.pack(side="left", padx=10)
-            c = ctk.CTkFrame(f, fg_color="transparent"); c.pack(side="left")
-            kb_entry = ctk.CTkEntry(c, textvariable=key_var, width=50)
-            ctrl_menu = ctk.CTkOptionMenu(c, values=["BTN_NORTH", "BTN_SOUTH", "BTN_EAST", "BTN_WEST"], variable=key_var)
-            def update_vis(*args):
-                if mode_var.get() == "Keyboard": ctrl_menu.pack_forget(); kb_entry.pack()
-                else: kb_entry.pack_forget(); ctrl_menu.pack()
-                self._update_hk_summary()
-            mode_var.trace_add("write", update_vis); update_vis()
-            ctk.CTkButton(f, text="Set", width=40, fg_color="#444", command=self._update_hk_hooks).pack(side="left", padx=5)
+            key_var = self.hk_cfg[tab_key]["key"]
+            
+            # Display current key
+            lbl = ctk.CTkLabel(f, textvariable=key_var, width=80, fg_color="#333", corner_radius=5)
+            lbl.pack(side="left", padx=10)
+            
+            # Detect Button
+            btn = ctk.CTkButton(f, text="Detect", width=60, fg_color="#444")
+            btn.configure(command=lambda: self._detect_key(btn, key_var))
+            btn.pack(side="left", padx=5)
+
+        def _detect_key(self, btn, var):
+            def _listener():
+                btn.configure(text="Press...", fg_color="orange")
+                event = keyboard.read_event(suppress=True)
+                if event.event_type == "down":
+                    key = event.name
+                    if key == "space": key = "space"
+                    var.set(key)
+                    btn.configure(text="Detect", fg_color="#444")
+                    self._update_hk_hooks()
+            threading.Thread(target=_listener, daemon=True).start()
 
         def _update_hk_summary(self):
             overlap = []; seen = {}
             for k, v in self.hk_cfg.items():
-                m = v["mode"].get(); kv = v["key"].get()
-                txt = f"{kv}" if m == "Keyboard" else f"🎮 {kv.replace('BTN_', '')}"
-                self.hk_labels[k].configure(text=txt)
-                combo = f"{m}:{kv}"
-                if combo in seen: overlap.append(f"{seen[combo]} & {k}")
-                seen[combo] = k
+                kv = v["key"].get()
+                self.hk_labels[k].configure(text=kv)
+                if kv in seen: overlap.append(f"{seen[kv]} & {k}")
+                seen[kv] = k
             if overlap: self.conflict_lbl.configure(text="Overlap Detected!")
             else: self.conflict_lbl.configure(text="")
             self._update_hk_hooks()
@@ -754,9 +791,64 @@ try:
         def _update_hk_hooks(self):
             keyboard.unhook_all()
             for k, v in self.hk_cfg.items():
-                if v["mode"].get() == "Keyboard":
-                    try: keyboard.add_hotkey(v["key"].get(), lambda t=k: self.q.put(t))
-                    except: pass
+                try: keyboard.add_hotkey(v["key"].get(), lambda t=k: self.q.put(t))
+                except: pass
+
+        def _exec_randomizer(self):
+            try: count = int(self.rnd_count.get())
+            except: count = 50
+            
+            valid_cats = [k for k, v in self.rnd_vars.items() if v.get()]
+            if not valid_cats: return
+            
+            pool = []
+            
+            if self.rnd_mode.get() == "Standard":
+                # Pool all items together (Weighted by sheer number of whites vs reds)
+                for c in valid_cats:
+                    pool.extend(self.data.db.get(c, []))
+            else:
+                # God Mode: Weighted by Tier
+                # We pick a tier first, then an item from that tier
+                pass # Logic handled below
+                
+            cmds = []
+            
+            for _ in range(count):
+                if self.rnd_mode.get() == "God Mode":
+                    # Pick random tier from enabled tiers
+                    tier = random.choice(valid_cats)
+                    tier_items = self.data.db.get(tier, [])
+                    if not tier_items: continue
+                    item = random.choice(tier_items)
+                else:
+                    if not pool: break
+                    item = random.choice(pool)
+                
+                cmds.append(f"give_item {item['id']} 1")
+            
+            self._inject_commands(cmds)
+
+        def _inject_commands(self, cmds):
+            if self.injecting:
+                self.injecting = False
+                self.stat.configure(text="ABORTED", text_color="red")
+                return
+            
+            self.injecting = True
+            self.stat.configure(text="INJECTING... (Press Hotkey to Stop)", text_color="orange")
+            
+            def r():
+                time.sleep(0.1); pydirectinput.press('f2'); time.sleep(0.1)
+                keyboard.write("cheats 1"); time.sleep(0.01); pydirectinput.press('enter'); time.sleep(0.01)
+                for c in cmds: 
+                    if not self.injecting: break
+                    keyboard.write(c); time.sleep(0.01); pydirectinput.press('enter'); time.sleep(0.01)
+                pydirectinput.press('f2')
+                self.injecting = False
+                self.stat.configure(text="Done", text_color="green")
+
+            threading.Thread(target=r, daemon=True).start()
 
         def _build_director_ui(self, parent, db, type_name):
             self._build_hotkey_ui(parent, type_name, "Toggle Loop / Spawn")
@@ -973,13 +1065,13 @@ try:
             try:
                 action = self.q.get_nowait()
                 if action == "Architect": self._inj()
+                elif action == "Randomizer": self._exec_randomizer()
                 elif action == "Boss": self._toggle_persist("Boss")
                 elif action == "Mob": self._toggle_persist("Mob")
             except: pass
             if self.run: self.after(50, self._pl)
         def _lpl(self):
             try:
-                # Lazy loading no longer strictly needed but kept for responsiveness
                 pass
             except: pass
             if self.run: self.after(200, self._lpl)
