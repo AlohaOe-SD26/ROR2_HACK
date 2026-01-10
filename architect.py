@@ -1,5 +1,5 @@
-# [Risk of Rain 2 Fun House] - v29.0 (The Dungeon Master Release)
-# Description: Hotkey Kill-Switch, Advanced Quantity Logic, Bulk Selectors, Mod Loader Integration.
+# [ROR2 Dungeon Master] - v29.1 (The Spacebar Release)
+# Description: Hotkey Defaults to Space, Advanced Quantity Logic, Bulk Selectors, Mod Loader Integration.
 
 import sys
 import os
@@ -73,7 +73,7 @@ try:
 
     # --- 2. CONFIG ---
     APP_NAME = "ROR2 Dungeon Master"
-    VERSION = "29.0.0"
+    VERSION = "29.1.0"
     BASE_DIR = os.getcwd()
     DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
     PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -84,7 +84,7 @@ try:
     WIKI_BASE = "https://riskofrain2.wiki.gg"
     WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
     WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-    HEADERS = {"User-Agent": "ROR2-FunHouse/29.0 (Dungeon Master)"}
+    HEADERS = {"User-Agent": "ROR2-FunHouse/29.1 (Spacebar)"}
 
     for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: 
         os.makedirs(d, exist_ok=True)
@@ -207,7 +207,6 @@ try:
             self.path = self._find_r2modman()
         
         def _find_r2modman(self):
-            # Check standard install locations
             possible_paths = [
                 os.path.expandvars(r"%LocalAppData%\Programs\r2modman\r2modman.exe"),
                 os.path.expandvars(r"%AppData%\r2modman\r2modman.exe")
@@ -565,7 +564,7 @@ try:
             # Hotkey Logic
             self.injecting = False # KILL SWITCH
             self.hk_cfg = {
-                "Architect": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f5")},
+                "Architect": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="space")},
                 "Boss": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f6")},
                 "Mob": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f7")}
             }
