@@ -1,10 +1,5 @@
-# [Risk of Rain 2 Fun House] - v28.0 (The Architect - Final Release)
-# Description: The complete, stabilized, and fully integrated ROR2 Dashboard.
-# Features:
-#   - Wiki Mining: "Surgeon" Logic (Smart Descriptions, Strict Sorting, Lazy-Load Images)
-#   - Database: "Master Key" Map (Verified Console IDs for Base Game + DLC 1 + DLC 2)
-#   - Cloud: "Git-Native" Sync (Dynamic Branch Detection, Conflict-Free Push/Pull)
-#   - Core: "Stabilizer" (Crash Reporting, Memory Anchors, Directory Pre-Checks)
+# [Risk of Rain 2 Fun House] - v29.0 (The Dungeon Master Release)
+# Description: Hotkey Kill-Switch, Advanced Quantity Logic, Bulk Selectors, Mod Loader Integration.
 
 import sys
 import os
@@ -18,7 +13,7 @@ def log_crash(e):
         f.write(traceback.format_exc())
 
 try:
-    # --- SILENCE STDOUT FOR PYTHONW (GUI MODE) ---
+    # --- SILENCE STDOUT FOR PYTHONW ---
     if sys.executable.endswith("pythonw.exe"):
         sys.stdout = open(os.devnull, "w")
         sys.stderr = open(os.devnull, "w")
@@ -77,8 +72,8 @@ try:
     from inputs import get_gamepad
 
     # --- 2. CONFIG ---
-    APP_NAME = "Risk of Rain 2 Fun House"
-    VERSION = "28.0.0"
+    APP_NAME = "ROR2 Dungeon Master"
+    VERSION = "29.0.0"
     BASE_DIR = os.getcwd()
     DATA_DIR = os.path.join(BASE_DIR, "ROR2_Data")
     PROFILE_DIR = os.path.join(DATA_DIR, "Profiles")
@@ -89,228 +84,98 @@ try:
     WIKI_BASE = "https://riskofrain2.wiki.gg"
     WIKI_ITEMS_PAGE = "https://riskofrain2.wiki.gg/wiki/Items"
     WIKI_API = "https://riskofrain2.wiki.gg/api.php"
-    HEADERS = {"User-Agent": "ROR2-FunHouse/28.0 (Architect)"}
+    HEADERS = {"User-Agent": "ROR2-FunHouse/29.0 (Dungeon Master)"}
 
-    # Ensure directories exist immediately to prevent IOErrors
     for d in [DATA_DIR, PROFILE_DIR, LOG_DIR]: 
         os.makedirs(d, exist_ok=True)
 
     logging.basicConfig(filename=os.path.join(LOG_DIR, "runtime.log"), level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
     # --- 3. DATABASE MAPPINGS ---
-    
-    # Visual "Vibes" (Rarity Colors)
     RARITY_VIBES = {
-        "Common": "#FFFFFF",          
-        "Uncommon": "#72B045",        
-        "Legendary": "#E64843",       
-        "Boss": "#E5C962",            
-        "Lunar": "#3478C7",           
-        "Void": "#884C9E",            
-        "Equipment": "#FF8000",       
-        "Lunar Equipment": "#3478C7", 
-        "Meal": "#F38D33",            
-        "Untiered": "#606060"         
+        "Common": "#FFFFFF", "Uncommon": "#72B045", "Legendary": "#E64843",
+        "Boss": "#E5C962", "Lunar": "#3478C7", "Void": "#884C9E",
+        "Equipment": "#FF8000", "Lunar Equipment": "#3478C7", 
+        "Meal": "#F38D33", "Untiered": "#606060"
     }
 
-    # Internal Console ID Map (The "Master Key")
     INTERNAL_ID_MAP = {
-        # --- SEEKERS OF THE STORM (DLC 2) ---
-        "Antler Shield": "AntlerShield",
-        "Bolstering Lantern": "AttackSpeedPerNearbyAllyOrEnemy",
-        "Chance Doll": "ChanceDoll",
-        "Knockback Fin": "KnockbackFin",
-        "Warped Echo": "DelayedDamage",
-        "Chronic Expansion": "StackDamageOnKill",
-        "Luminous Shot": "LuminousShot",
-        "Noxious Thorn": "NoxiousThorn",
-        "Prayer Beads": "PrayerBeads",
-        "Sale Star": "SaleStar",
-        "Unstable Transmitter": "TeleportOnLowHealth",
-        "Electric Boomerang": "ElectricBoomerang",
-        "Growth Nectar": "GrowthNectar",
-        "Runic Lens": "RunicLens",
-        "Sonorous Whispers": "ItemDropChanceOnKill",
-        "War Bonds": "WarBonds",
-        "Longstanding Solitude": "LongstandingSolitude",
-        "Seed of Life": "HealAndRevive",
-        "Bison Steak Dinner": "SearedSteak",
-        "The Ultimate Meal": "UltimateMeal",
-
-        # --- SURVIVORS OF THE VOID (DLC 1) ---
-        "Delicate Watch": "FragileDamageBonus",
-        "Mocha": "AttackSpeedAndMoveSpeed",
-        "Oddly-shaped Opal": "OutOfCombatArmor",
-        "Power Elixir": "HealingPotion",
-        "Roll of Pennies": "GoldOnHurt",
-        "Hunter's Harpoon": "MoveSpeedOnKill",
-        "Ignition Tank": "StrengthenBurn",
-        "Regenerating Scrap": "RegeneratingScrap",
-        "Shipping Request Form": "FreeChest",
-        "Shuriken": "PrimarySkillShuriken",
-        "Ben's Raincoat": "ImmuneToDebuff",
-        "Bottled Chaos": "RandomEquipmentTrigger",
-        "Laser Scope": "CritDamage",
-        "Pocket I.C.B.M.": "MoreMissile",
-        "Spare Drone Parts": "DroneWeapons",
-        "Symbiotic Scorpion": "PermanentDebuffOnHit",
-        "Benthic Bloom": "CloverVoid",
-        "Encrusted Key": "TreasureCacheVoid",
-        "Lost Seer's Lenses": "CritGlassesVoid",
-        "Lysate Cell": "EquipmentMagazineVoid",
-        "Needletick": "BleedOnHitVoid",
-        "Newly Hatched Zoea": "VoidMegaCrabItem",
-        "Plasma Shrimp": "MissileVoid",
-        "Pluripotent Larva": "ExtraLifeVoid",
-        "Polylute": "ChainLightningVoid",
-        "Safer Spaces": "BearVoid",
-        "Singularity Band": "ElementalRingVoid",
-        "Tentabauble": "SlowOnHitVoid",
-        "Voidsent Flame": "ExplodeOnDeathVoid",
-        "Weeping Fungus": "MushroomVoid",
-        "Executive Card": "MultiShopCard",
-        "Goobo Jr.": "GummyClone",
-        "Molotov (6-Pack)": "Molotov",
+        # SEEKERS DLC
+        "Antler Shield": "AntlerShield", "Bolstering Lantern": "AttackSpeedPerNearbyAllyOrEnemy",
+        "Chance Doll": "ChanceDoll", "Knockback Fin": "KnockbackFin", "Warped Echo": "DelayedDamage",
+        "Chronic Expansion": "StackDamageOnKill", "Luminous Shot": "LuminousShot",
+        "Noxious Thorn": "NoxiousThorn", "Prayer Beads": "PrayerBeads", "Sale Star": "SaleStar",
+        "Unstable Transmitter": "TeleportOnLowHealth", "Electric Boomerang": "ElectricBoomerang",
+        "Growth Nectar": "GrowthNectar", "Runic Lens": "RunicLens", "Sonorous Whispers": "ItemDropChanceOnKill",
+        "War Bonds": "WarBonds", "Longstanding Solitude": "LongstandingSolitude",
+        "Seed of Life": "HealAndRevive", "Bison Steak Dinner": "SearedSteak", "The Ultimate Meal": "UltimateMeal",
+        
+        # VOID DLC
+        "Delicate Watch": "FragileDamageBonus", "Mocha": "AttackSpeedAndMoveSpeed",
+        "Oddly-shaped Opal": "OutOfCombatArmor", "Power Elixir": "HealingPotion", "Roll of Pennies": "GoldOnHurt",
+        "Hunter's Harpoon": "MoveSpeedOnKill", "Ignition Tank": "StrengthenBurn",
+        "Regenerating Scrap": "RegeneratingScrap", "Shipping Request Form": "FreeChest",
+        "Shuriken": "PrimarySkillShuriken", "Ben's Raincoat": "ImmuneToDebuff",
+        "Bottled Chaos": "RandomEquipmentTrigger", "Laser Scope": "CritDamage",
+        "Pocket I.C.B.M.": "MoreMissile", "Spare Drone Parts": "DroneWeapons",
+        "Symbiotic Scorpion": "PermanentDebuffOnHit", "Benthic Bloom": "CloverVoid",
+        "Encrusted Key": "TreasureCacheVoid", "Lost Seer's Lenses": "CritGlassesVoid",
+        "Lysate Cell": "EquipmentMagazineVoid", "Needletick": "BleedOnHitVoid",
+        "Newly Hatched Zoea": "VoidMegaCrabItem", "Plasma Shrimp": "MissileVoid",
+        "Pluripotent Larva": "ExtraLifeVoid", "Polylute": "ChainLightningVoid", "Safer Spaces": "BearVoid",
+        "Singularity Band": "ElementalRingVoid", "Tentabauble": "SlowOnHitVoid",
+        "Voidsent Flame": "ExplodeOnDeathVoid", "Weeping Fungus": "MushroomVoid",
+        "Executive Card": "MultiShopCard", "Goobo Jr.": "GummyClone", "Molotov (6-Pack)": "Molotov",
         "Trophy Hunter's Tricorn": "BossHunter",
 
-        # --- BASE GAME ITEMS ---
-        # Common
-        "Armor-Piercing Rounds": "BossDamageBonus",
-        "Backup Magazine": "SecondarySkillMagazine",
-        "Bison Steak": "FlatHealth", 
-        "Bundle of Fireworks": "Firework",
-        "Bustling Fungus": "Mushroom",
-        "Cautious Slug": "HealWhileSafe",
-        "Crowbar": "Crowbar",
-        "Energy Drink": "SprintBonus",
-        "Focus Crystal": "NearbyDamageBonus",
-        "Gasoline": "IgniteOnKill",
-        "Lens-Maker's Glasses": "CritGlasses",
-        "Medkit": "Medkit",
-        "Monster Tooth": "Tooth",
-        "Paul's Goat Hoof": "Hoof",
-        "Personal Shield Generator": "PersonalShield",
-        "Repulsion Armor Plate": "ArmorPlate",
-        "Rusted Key": "TreasureCache",
-        "Soldier's Syringe": "Syringe",
-        "Sticky Bomb": "StickyBomb",
-        "Stun Grenade": "StunChanceOnHit",
-        "Topaz Brooch": "BarrierOnKill",
-        "Tougher Times": "Bear",
-        "Tri-Tip Dagger": "BleedOnHit",
-        "Warbanner": "WardOnLevel",
-
-        # Uncommon
-        "AtG Missile Mk. 1": "Missile",
-        "Bandolier": "Bandolier",
-        "Berzerker's Pauldron": "WarCryOnMultiKill",
-        "Chronobauble": "SlowOnHit",
-        "Death Mark": "DeathMark",
-        "Fuel Cell": "EquipmentMagazine",
-        "Ghor's Tome": "BonusGoldPackOnKill",
-        "Harvester's Scythe": "HealOnCrit",
-        "Hopoo Feather": "Feather",
-        "Infusion": "Infusion",
-        "Kjaro's Band": "FireRing",
-        "Leeching Seed": "Seed",
-        "Lepton Daisy": "TPHealingNova",
-        "Old Guillotine": "ExecuteLowHealthElite",
-        "Old War Stealthkit": "Phasing",
-        "Predatory Instincts": "AttackSpeedOnCrit",
-        "Razorwire": "Thorns",
-        "Red Whip": "SprintOutOfCombat",
-        "Rose Buckler": "SprintArmor",
-        "Runald's Band": "IceRing",
-        "Squid Polyp": "Squid",
-        "Ukulele": "ChainLightning",
-        "War Horn": "EnergizedOnEquipmentUse",
-        "Wax Quail": "JumpBoost",
+        # BASE GAME
+        "Armor-Piercing Rounds": "BossDamageBonus", "Backup Magazine": "SecondarySkillMagazine",
+        "Bison Steak": "FlatHealth", "Bundle of Fireworks": "Firework", "Bustling Fungus": "Mushroom",
+        "Cautious Slug": "HealWhileSafe", "Crowbar": "Crowbar", "Energy Drink": "SprintBonus",
+        "Focus Crystal": "NearbyDamageBonus", "Gasoline": "IgniteOnKill", "Lens-Maker's Glasses": "CritGlasses",
+        "Medkit": "Medkit", "Monster Tooth": "Tooth", "Paul's Goat Hoof": "Hoof",
+        "Personal Shield Generator": "PersonalShield", "Repulsion Armor Plate": "ArmorPlate",
+        "Rusted Key": "TreasureCache", "Soldier's Syringe": "Syringe", "Sticky Bomb": "StickyBomb",
+        "Stun Grenade": "StunChanceOnHit", "Topaz Brooch": "BarrierOnKill", "Tougher Times": "Bear",
+        "Tri-Tip Dagger": "BleedOnHit", "Warbanner": "WardOnLevel",
+        "AtG Missile Mk. 1": "Missile", "Bandolier": "Bandolier", "Berzerker's Pauldron": "WarCryOnMultiKill",
+        "Chronobauble": "SlowOnHit", "Death Mark": "DeathMark", "Fuel Cell": "EquipmentMagazine",
+        "Ghor's Tome": "BonusGoldPackOnKill", "Harvester's Scythe": "HealOnCrit", "Hopoo Feather": "Feather",
+        "Infusion": "Infusion", "Kjaro's Band": "FireRing", "Leeching Seed": "Seed",
+        "Lepton Daisy": "TPHealingNova", "Old Guillotine": "ExecuteLowHealthElite", "Old War Stealthkit": "Phasing",
+        "Predatory Instincts": "AttackSpeedOnCrit", "Razorwire": "Thorns", "Red Whip": "SprintOutOfCombat",
+        "Rose Buckler": "SprintArmor", "Runald's Band": "IceRing", "Squid Polyp": "Squid",
+        "Ukulele": "ChainLightning", "War Horn": "EnergizedOnEquipmentUse", "Wax Quail": "JumpBoost",
         "Will-o'-the-wisp": "ExplodeOnDeath",
-
-        # Legendary
-        "57 Leaf Clover": "Clover",
-        "Aegis": "BarrierOnOverHeal",
-        "Alien Head": "AlienHead",
-        "Brainstalks": "KillEliteFrenzy",
-        "Brilliant Behemoth": "Behemoth",
-        "Ceremonial Dagger": "Dagger",
-        "Defensive Microbots": "CaptainDefenseMatrix",
-        "Dio's Best Friend": "ExtraLife",
-        "Frost Relic": "Icicle",
-        "H3AD-5T v2": "FallBoots",
-        "Happiest Mask": "GhostOnKill",
-        "Hardlight Afterburner": "UtilitySkillMagazine",
-        "Interstellar Desk Plant": "Plant",
-        "N'kuhana's Opinion": "NovaOnHeal",
-        "Rejuvenation Rack": "IncreaseHealing",
-        "Resonance Disc": "LaserTurbine",
-        "Sentient Meat Hook": "BounceNearby",
-        "Shattering Justice": "ArmorReductionOnHit",
-        "Soulbound Catalyst": "Talisman",
-        "Unstable Tesla Coil": "ShockNearby",
-        "Wake of Vultures": "HeadHunter",
-
-        # Boss
-        "Defense Nucleus": "MinorConstructOnKill",
-        "Empathy Cores": "RoboBallBuddy",
-        "Genesis Loop": "BleedOnHitAndExplode",
-        "Halcyon Seed": "TitanGoldDuringTP",
-        "Little Disciple": "SprintWisp",
-        "Mired Urn": "SiphonOnLowHealth",
-        "Molten Perforator": "FireballsOnHit",
-        "Planula": "ParentEgg",
-        "Queen's Gland": "BeetleGland",
-        "Shatterspleen": "BleedOnHitAndExplode",
-        "Titanic Knurl": "Knurl",
-        "Charged Perforator": "LightningStrikeOnHit",
-
-        # Lunar
-        "Beads of Fealty": "LunarTrinket",
-        "Brittle Crown": "GoldOnHit",
-        "Corpsebloom": "RepeatHeal",
-        "Defiant Gouge": "GlobalDeathMark", 
-        "Egocentrism": "LunarSun",
-        "Essence of Heresy": "LunarSpecialReplacement",
-        "Eulogy Zero": "RandomlyLunar",
-        "Focused Convergence": "FocusConvergence",
-        "Gesture of the Drowned": "AutoCastEquipment",
-        "Hooks of Heresy": "LunarSecondaryReplacement",
-        "Light Flux Pauldron": "HalfAttackSpeedHalfCooldowns",
-        "Mercurial Rachis": "RandomDamageZone",
-        "Purity": "LunarBadLuck",
-        "Radiant Pearl": "ShinyPearl",
-        "Shaped Glass": "LunarDagger",
-        "Stone Flux Pauldron": "HalfSpeedDoubleHealth",
-        "Strides of Heresy": "LunarUtilityReplacement",
-        "Transcendence": "ShieldOnly",
-        "Visions of Heresy": "LunarPrimaryReplacement",
-
-        # Equipment
-        "Blast Shower": "Cleanse",
-        "Disposable Missile Launcher": "CommandMissile",
-        "Foreign Fruit": "Fruit",
-        "Forgive Me Please": "DeathProjectile",
-        "Gnarled Woodsprite": "PassiveHealing",
-        "Jade Elephant": "GainArmor",
-        "Milky Chrysalis": "Jetpack",
-        "Ocular HUD": "CritOnUse",
-        "Preon Accumulator": "BFG",
-        "Primordial Cube": "Blackhole",
-        "Radar Scanner": "Scanner",
-        "Recycler": "Recycle",
-        "Royal Capacitor": "Lightning",
-        "Sawmerang": "Saw",
-        "Super Massive Leech": "LifestealOnHit",
-        "Gorag's Opus": "TeamWarCry",
-        "The Back-up": "DroneBackup",
-        "The Crowdfunder": "GoldGat",
-        "Volcanic Egg": "FireBallDash",
-        
-        # Lunar Equipment
-        "Effigy of Grief": "CripplingWard",
-        "Glowing Meteorite": "Meteor",
-        "Helfire Tincture": "BurnNearby",
-        "Spinel Tonic": "Tonic",
+        "57 Leaf Clover": "Clover", "Aegis": "BarrierOnOverHeal", "Alien Head": "AlienHead",
+        "Brainstalks": "KillEliteFrenzy", "Brilliant Behemoth": "Behemoth", "Ceremonial Dagger": "Dagger",
+        "Defensive Microbots": "CaptainDefenseMatrix", "Dio's Best Friend": "ExtraLife", "Frost Relic": "Icicle",
+        "H3AD-5T v2": "FallBoots", "Happiest Mask": "GhostOnKill", "Hardlight Afterburner": "UtilitySkillMagazine",
+        "Interstellar Desk Plant": "Plant", "N'kuhana's Opinion": "NovaOnHeal",
+        "Rejuvenation Rack": "IncreaseHealing", "Resonance Disc": "LaserTurbine",
+        "Sentient Meat Hook": "BounceNearby", "Shattering Justice": "ArmorReductionOnHit",
+        "Soulbound Catalyst": "Talisman", "Unstable Tesla Coil": "ShockNearby", "Wake of Vultures": "HeadHunter",
+        "Defense Nucleus": "MinorConstructOnKill", "Empathy Cores": "RoboBallBuddy",
+        "Genesis Loop": "BleedOnHitAndExplode", "Halcyon Seed": "TitanGoldDuringTP",
+        "Little Disciple": "SprintWisp", "Mired Urn": "SiphonOnLowHealth", "Molten Perforator": "FireballsOnHit",
+        "Planula": "ParentEgg", "Queen's Gland": "BeetleGland", "Shatterspleen": "BleedOnHitAndExplode",
+        "Titanic Knurl": "Knurl", "Charged Perforator": "LightningStrikeOnHit",
+        "Beads of Fealty": "LunarTrinket", "Brittle Crown": "GoldOnHit", "Corpsebloom": "RepeatHeal",
+        "Defiant Gouge": "GlobalDeathMark", "Egocentrism": "LunarSun", "Essence of Heresy": "LunarSpecialReplacement",
+        "Eulogy Zero": "RandomlyLunar", "Focused Convergence": "FocusConvergence",
+        "Gesture of the Drowned": "AutoCastEquipment", "Hooks of Heresy": "LunarSecondaryReplacement",
+        "Light Flux Pauldron": "HalfAttackSpeedHalfCooldowns", "Mercurial Rachis": "RandomDamageZone",
+        "Purity": "LunarBadLuck", "Radiant Pearl": "ShinyPearl", "Shaped Glass": "LunarDagger",
+        "Stone Flux Pauldron": "HalfSpeedDoubleHealth", "Strides of Heresy": "LunarUtilityReplacement",
+        "Transcendence": "ShieldOnly", "Visions of Heresy": "LunarPrimaryReplacement",
+        "Blast Shower": "Cleanse", "Disposable Missile Launcher": "CommandMissile", "Foreign Fruit": "Fruit",
+        "Forgive Me Please": "DeathProjectile", "Gnarled Woodsprite": "PassiveHealing",
+        "Jade Elephant": "GainArmor", "Milky Chrysalis": "Jetpack", "Ocular HUD": "CritOnUse",
+        "Preon Accumulator": "BFG", "Primordial Cube": "Blackhole", "Radar Scanner": "Scanner",
+        "Recycler": "Recycle", "Royal Capacitor": "Lightning", "Sawmerang": "Saw",
+        "Super Massive Leech": "LifestealOnHit", "Gorag's Opus": "TeamWarCry", "The Back-up": "DroneBackup",
+        "The Crowdfunder": "GoldGat", "Volcanic Egg": "FireBallDash", "Effigy of Grief": "CripplingWard",
+        "Glowing Meteorite": "Meteor", "Helfire Tincture": "BurnNearby", "Spinel Tonic": "Tonic",
         "Remote Caffeinator": "VendingMachine"
     }
 
@@ -337,6 +202,27 @@ try:
     TEAM_INDICES = {"Monster (Enemy)": 2, "Player (Ally)": 1, "Neutral (Chaos)": 0}
 
     # --- 4. ENGINES ---
+    class ModManager:
+        def __init__(self):
+            self.path = self._find_r2modman()
+        
+        def _find_r2modman(self):
+            # Check standard install locations
+            possible_paths = [
+                os.path.expandvars(r"%LocalAppData%\Programs\r2modman\r2modman.exe"),
+                os.path.expandvars(r"%AppData%\r2modman\r2modman.exe")
+            ]
+            for p in possible_paths:
+                if os.path.exists(p): return p
+            return None
+
+        def launch(self):
+            if self.path and os.path.exists(self.path):
+                subprocess.Popen([self.path])
+                return "Launching r2modman..."
+            else:
+                return "r2modman not found."
+
     class SteamManager:
         def __init__(self):
             self.path = self._find_steam_path()
@@ -364,11 +250,11 @@ try:
             if not account or account == "Default / Auto":
                 os.startfile(f"steam://run/{game_id}")
                 return "Launching via Protocol..."
-            if not self.path: return "Error: Steam path not found."
             exe = os.path.join(self.path, "steam.exe")
-            if not os.path.exists(exe): return "Error: steam.exe not found."
-            subprocess.Popen([exe, "-login", account, "-applaunch", game_id])
-            return f"Switching to {account}..."
+            if os.path.exists(exe):
+                subprocess.Popen([exe, "-login", account, "-applaunch", game_id])
+                return f"Switching to {account}..."
+            return "Steam not found."
 
     class LogWatcher:
         def __init__(self):
@@ -392,15 +278,13 @@ try:
                     except: pass
                 time.sleep(1)
 
-    # --- CLOUD MANAGER (DYNAMIC GIT NATIVE) ---
     class CloudManager:
         @staticmethod
         def get_current_branch():
             try:
                 result = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=BASE_DIR, capture_output=True, text=True, check=True)
                 return result.stdout.strip()
-            except:
-                return "main" # Fallback
+            except: return "main"
 
         @staticmethod
         def run_git(args, error_msg):
@@ -408,33 +292,19 @@ try:
                 subprocess.run(args, cwd=BASE_DIR, check=True, capture_output=True, text=True)
                 return True, "Success"
             except subprocess.CalledProcessError as e:
-                err = e.stderr if e.stderr else str(e)
-                return False, f"{error_msg}\n{err}"
+                return False, f"{error_msg}\n{e.stderr}"
 
         @staticmethod
         def push_profile(profile_name):
             target_file = os.path.join("ROR2_Data", "Profiles", f"{profile_name}.json")
             if not os.path.exists(os.path.join(BASE_DIR, target_file)): return False, "Profile not found."
-            
             branch = CloudManager.get_current_branch()
-            
-            # 1. Pull First
             CloudManager.run_git(["git", "pull", "origin", branch], "Pull failed.")
-            
-            # 2. Add
-            ok, msg = CloudManager.run_git(["git", "add", target_file], "Git Add failed.")
-            if not ok: return False, msg
-            
-            # 3. Commit
-            try:
-                subprocess.run(["git", "commit", "-m", f"Sync Profile: {profile_name}"], cwd=BASE_DIR, check=True, capture_output=True, text=True)
-            except subprocess.CalledProcessError:
-                pass
-            
-            # 4. Push
+            CloudManager.run_git(["git", "add", target_file], "Git Add failed.")
+            try: subprocess.run(["git", "commit", "-m", f"Sync Profile: {profile_name}"], cwd=BASE_DIR, check=True, capture_output=True, text=True)
+            except: pass
             ok, msg = CloudManager.run_git(["git", "push", "origin", branch], "Git Push failed.")
             if not ok: return False, msg
-            
             return True, "Profile Uploaded!"
 
         @staticmethod
@@ -444,7 +314,6 @@ try:
             if ok: return True, "Profiles Synced."
             return False, msg
 
-    # --- MINING ENGINE ---
     class WikiSyncEngine:
         def __init__(self, cb):
             self.cb = cb; self.stop_flag = False
@@ -456,11 +325,8 @@ try:
             path = os.path.join(folder, filename)
             if os.path.exists(path) and os.path.getsize(path) > 1024: return True
             try:
-                clean_url = url
-                if "/thumb/" in url:
-                    clean_url = url.replace("/thumb", "")
-                    if "/" in clean_url.split(".")[-1]: 
-                        clean_url = "/".join(clean_url.split("/")[:-1])
+                clean_url = url.replace("/thumb", "")
+                if "/" in clean_url.split(".")[-1]: clean_url = "/".join(clean_url.split("/")[:-1])
                 r = self.session.get(clean_url, timeout=5)
                 if r.status_code == 200:
                     with open(path, 'wb') as f: f.write(r.content); return True
@@ -484,127 +350,69 @@ try:
         def run_sync(self):
             try:
                 collected = {k: [] for k in RARITY_VIBES.keys()}
-                
                 self.cb(0, 100, "Discovery", "Mapping Wiki Structure...", "#FFF")
-                
                 r = self.session.get(WIKI_ITEMS_PAGE, timeout=10)
                 soup = BeautifulSoup(r.text, 'html.parser')
-                
                 header_map = {
-                    "Lunar Equipment": "Lunar Equipment", 
-                    "Elite Equipment": "Equipment",
-                    "Common": "Common",
-                    "Uncommon": "Uncommon",
-                    "Legendary": "Legendary",
-                    "Boss": "Boss",
-                    "Lunar": "Lunar", 
-                    "Void": "Void",
-                    "Equipment": "Equipment",
-                    "Consumable": "Meal"
+                    "Lunar Equipment": "Lunar Equipment", "Elite Equipment": "Equipment", "Common": "Common",
+                    "Uncommon": "Uncommon", "Legendary": "Legendary", "Boss": "Boss", "Lunar": "Lunar", 
+                    "Void": "Void", "Equipment": "Equipment", "Consumable": "Meal"
                 }
-                
                 sorted_map_keys = sorted(header_map.keys(), key=len, reverse=True)
-                
                 headers = soup.find_all(['h2', 'h3'])
                 total_items = sum([len(h.find_next("table").find_all("tr")) for h in headers if h.find_next("table")])
                 current_idx = 0
-                
                 for h in headers:
                     header_text = h.get_text(strip=True).replace(" items", "")
-                    
                     target_rarity = None
                     for key in sorted_map_keys:
                         if key in header_text:
-                            target_rarity = header_map[key]
-                            break
-                    
+                            target_rarity = header_map[key]; break
                     if not target_rarity: continue
-                    if target_rarity not in collected: target_rarity = "Common" 
-                    
                     tbl = h.find_next("table")
                     if not tbl: continue
-                    
                     for row in tbl.find_all("tr")[1:]:
+                        if self.stop_flag: break
+                        current_idx += 1
                         try:
-                            if self.stop_flag: break
-                            current_idx += 1
-                            
                             cols = row.find_all(['td', 'th'])
                             if len(cols) < 3: continue 
-                            
                             link_tag = row.find("a")
                             if not link_tag: continue
                             name = link_tag.get('title', link_tag.text.strip())
                             href = link_tag['href']
                             if href.startswith("/"): href = WIKI_BASE + href
-                            
-                            # Smart Description
                             brief_desc = "No description."
                             candidates = []
                             for col in cols[1:]:
-                                text = col.get_text(" ", strip=True)
-                                lower_text = text.lower()
+                                text = col.get_text(" ", strip=True); lower_text = text.lower()
                                 if lower_text in ["linear", "hyperbolic", "exponential", "none", "special", "standard"]: continue
-                                if text in ["Common", "Uncommon", "Legendary", "Boss", "Lunar", "Void", "Equipment"]: continue
-                                if text == name: continue
-                                if len(text) < 10: continue
-                                score = len(text)
-                                if "%" in text: score += 50
-                                if "damage" in lower_text: score += 20
-                                if "heal" in lower_text: score += 20
-                                if "cooldown" in lower_text: score += 20
+                                if text in header_map.keys() or text == name or len(text) < 10: continue
+                                score = len(text) + (50 if "%" in text else 0)
                                 candidates.append((score, text))
-                            
                             if candidates:
                                 candidates.sort(key=lambda x: x[0], reverse=True)
                                 brief_desc = candidates[0][1]
-                            
                             img_tag = row.find("img")
                             img_url = None
                             if img_tag:
                                 img_url = img_tag.get("data-src") or img_tag.get("src")
                                 if img_url and img_url.startswith("/"): img_url = WIKI_BASE + img_url
                             
-                            vibe_color = RARITY_VIBES.get(target_rarity, "#FFF")
-                            self.cb(current_idx, total_items, f"[{target_rarity}]", name, vibe_color)
-                            
-                            full_notes = self.fetch_full_text(name)
-                            safe_n = self.safe_name(name)
-                            
-                            # ID LOOKUP
+                            self.cb(current_idx, total_items, f"[{target_rarity}]", name, RARITY_VIBES.get(target_rarity, "#FFF"))
+                            full_notes = self.fetch_full_text(name); safe_n = self.safe_name(name)
                             console_id = INTERNAL_ID_MAP.get(name, safe_n)
-                            
                             item_dir = os.path.join(DATA_DIR, self.safe_name(target_rarity), safe_n)
                             if not os.path.exists(item_dir): os.makedirs(item_dir)
-                            
-                            item_data = {
-                                "name": name,
-                                "id": console_id, 
-                                "desc": brief_desc, 
-                                "notes": full_notes, 
-                                "url": href,
-                                "img_file": f"{safe_n}.png",
-                                "local_path": item_dir,
-                                "rarity_raw": target_rarity
-                            }
-                            
+                            item_data = {"name": name, "id": console_id, "desc": brief_desc, "notes": full_notes, "url": href, "img_file": f"{safe_n}.png", "local_path": item_dir, "rarity_raw": target_rarity}
                             with open(os.path.join(item_dir, "meta.json"), 'w') as f: json.dump(item_data, f, indent=4)
                             if img_url: self.save_image(img_url, item_dir, f"{safe_n}.png")
-                            
-                            collected[target_rarity].append(item_data)
-                            time.sleep(0.05)
-                            
-                        except Exception as e:
-                            logging.error(f"Row Error: {e}")
-                            continue
-
+                            collected[target_rarity].append(item_data); time.sleep(0.05)
+                        except: continue
                 if self.stop_flag: return False
                 with open(CACHE_FILE, 'w') as f: json.dump(collected, f, indent=4)
                 return True
-                
-            except Exception as e:
-                logging.error(f"Sync Fatal: {e}")
-                return False
+            except: return False
 
     # --- 5. DATA MANAGER ---
     class DataManager:
@@ -625,33 +433,27 @@ try:
             except: pass
             return None
 
-    # --- 6. UTILS ---
+    # --- 6. UTILS & GUI ---
     def center_window(win, width, height):
         sw, sh = win.winfo_screenwidth(), win.winfo_screenheight()
         x, y = (sw - width) // 2, (sh - height) // 2
         win.geometry(f"{width}x{height}+{x}+{y}")
 
-    # --- 7. POPUPS & DIALOGS ---
     class DetailsWindow(ctk.CTkToplevel):
         def __init__(self, parent, item_data, data_mgr):
             super().__init__(parent); self.title(f"{item_data['name']}"); center_window(self, 600, 700); self.attributes("-topmost", True)
             head = ctk.CTkFrame(self, fg_color="transparent"); head.pack(fill="x", padx=20, pady=20)
             img = data_mgr.get_image(item_data, size=(100, 100))
             if img: ctk.CTkLabel(head, text="", image=img).pack(side="left", padx=(0, 20))
-            else: ctk.CTkLabel(head, text="[No Image]", width=100, height=100, fg_color="#444").pack(side="left", padx=(0, 20))
-            
             info = ctk.CTkFrame(head, fg_color="transparent"); info.pack(side="left", fill="both")
             ctk.CTkLabel(info, text=item_data['name'], font=("Impact", 24)).pack(anchor="w")
             ctk.CTkLabel(info, text=f"ID: {item_data['id']}", text_color="gray").pack(anchor="w")
-            
             ctk.CTkLabel(self, text="Summary", font=("Arial", 14, "bold")).pack(anchor="w", padx=20)
             ctk.CTkLabel(self, text=item_data.get('desc', ''), font=("Arial", 12), text_color="#DDD", wraplength=550, justify="left").pack(anchor="w", padx=20, pady=5)
-
             ctk.CTkLabel(self, text="Full Stats & Notes", font=("Arial", 14, "bold")).pack(anchor="w", padx=20, pady=(10,0))
             db = ctk.CTkTextbox(self, height=350, fg_color="#333"); db.pack(fill="both", expand=True, padx=20, pady=5)
             db.insert("0.0", item_data.get('notes',''))
             db.configure(state="disabled")
-            
             btm = ctk.CTkFrame(self, fg_color="transparent"); btm.pack(fill="x", padx=20, pady=20)
             ctk.CTkButton(btm, text="Wiki", command=lambda: webbrowser.open(item_data.get('url', WIKI_BASE))).pack(side="right")
             ctk.CTkButton(btm, text="Close", fg_color="#444", command=self.destroy).pack(side="left")
@@ -692,29 +494,6 @@ try:
             if not self.active: return
             self.l_itm.configure(text="Download Stopped / Failed.", text_color="red"); self.btn.configure(state="normal", text="RETRY")
         def finish(self): self.active = False; self.after_cancel(self.timer_id) if self.timer_id else None; self.withdraw(); self.destroy(); self.complete_cb()
-
-    class ProfileManager:
-        @staticmethod
-        def get_profiles():
-            files = [f.replace(".json", "") for f in os.listdir(PROFILE_DIR) if f.endswith(".json")]
-            if "Default" not in files: files.insert(0, "Default")
-            return sorted(files)
-        @staticmethod
-        def save(name, data, metadata=None):
-            clean = {
-                "items": {k: {"c": v["chk"].get(), "q": v["qty"].get()} for k,v in data.items() if v["chk"].get() or int(v["qty"].get())>0},
-                "meta": metadata if metadata else {}
-            }
-            with open(os.path.join(PROFILE_DIR, f"{name}.json"), 'w') as f: json.dump(clean, f, indent=4)
-        @staticmethod
-        def load(name):
-            p = os.path.join(PROFILE_DIR, f"{name}.json")
-            if os.path.exists(p):
-                with open(p, 'r') as f: 
-                    d = json.load(f)
-                    if "items" not in d: return {"items": d, "meta": {}}
-                    return d
-            return {"items": {}, "meta": {}}
 
     class ProfileConsole(ctk.CTkToplevel):
         def __init__(self, parent, cb_load, cb_save, curr):
@@ -774,63 +553,54 @@ try:
             w, h = int(sw * 0.85), int(sh * 0.85); x, y = (sw - w) // 2, (sh - h) // 2
             self.geometry(f"{w}x{h}+{x}+{y}")
             self.protocol("WM_DELETE_WINDOW", self.request_close)
-            
             ctk.set_appearance_mode("Dark")
+            
             self.data = DataManager(); self.q = queue.Queue(); self.run = True
             self.prof = "Default"; self.sel_i = {}
-            self.steam = SteamManager()
-            self.log_watcher = LogWatcher()
-            self.log_watcher.start_watching()
+            self.steam = SteamManager(); self.mods = ModManager()
+            self.log_watcher = LogWatcher(); self.log_watcher.start_watching()
             self.steam_user = ctk.StringVar(value="Default / Auto")
             self.cat_f = {}; self.act_c = None
             
-            # --- PER-TAB HOTKEY CONFIG ---
+            # Hotkey Logic
+            self.injecting = False # KILL SWITCH
             self.hk_cfg = {
                 "Architect": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f5")},
                 "Boss": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f6")},
                 "Mob": {"mode": ctk.StringVar(value="Keyboard"), "key": ctk.StringVar(value="f7")}
             }
             
-            # --- DIRECTOR STATE ---
+            # Director State
             self.queues = {"Boss": [], "Mob": []}
-            self.ui_textboxes = {}
-            self.active_loops = {"Boss": False, "Mob": False}
-            self.loop_buttons = {}
+            self.ui_textboxes = {}; self.active_loops = {"Boss": False, "Mob": False}; self.loop_buttons = {}
             self.smart_chk_vars = {"Boss": ctk.BooleanVar(value=False), "Mob": ctk.BooleanVar(value=False)}
             self.interval_vars = {"Boss": ctk.StringVar(value="30"), "Mob": ctk.StringVar(value="5")}
             
-            # Ensure DB is loaded or empty list handled to prevent crash on missing key
-            boss_keys = list(BOSS_DB.keys())
-            mob_keys = list(MOB_DB.keys())
+            # Dropdowns
+            boss_keys = list(BOSS_DB.keys()); mob_keys = list(MOB_DB.keys())
             self.sel_boss = ctk.StringVar(value=boss_keys[0] if boss_keys else "")
             self.sel_mob = ctk.StringVar(value=mob_keys[0] if mob_keys else "")
-            
-            self.ent_elite_boss = ctk.StringVar(value="None")
-            self.ent_team_boss = ctk.StringVar(value="Monster (Enemy)")
-            self.ent_count_boss = ctk.StringVar(value="1")
-            self.ent_elite_mob = ctk.StringVar(value="None")
-            self.ent_team_mob = ctk.StringVar(value="Monster (Enemy)")
-            self.ent_count_mob = ctk.StringVar(value="1")
+            self.ent_elite_boss = ctk.StringVar(value="None"); self.ent_team_boss = ctk.StringVar(value="Monster (Enemy)")
+            self.ent_count_boss = ctk.StringVar(value="1"); self.ent_elite_mob = ctk.StringVar(value="None")
+            self.ent_team_mob = ctk.StringVar(value="Monster (Enemy)"); self.ent_count_mob = ctk.StringVar(value="1")
             self.dir_disabled = False
 
+            # Architect State (New Quantity Controls)
+            self.qty_mode = ctk.StringVar(value="10")
+            self.qty_custom_val = ctk.StringVar(value="10")
+
             self.withdraw()
-            
-            # Corrupt check
             corrupt = False
             if os.path.exists(CACHE_FILE):
                 if os.path.getsize(CACHE_FILE) < 1024: corrupt = True
-            
-            if not os.path.exists(CACHE_FILE) or corrupt:
-                # Fix GC Issue: Keep reference to window
-                self.setup_window = SetupWindow(self, self.on_setup_complete)
-            else:
-                self._ask_upd()
+            if not os.path.exists(CACHE_FILE) or corrupt: self.setup_window = SetupWindow(self, self.on_setup_complete)
+            else: self._ask_upd()
 
         def on_setup_complete(self): self.deiconify(); self._init_main()
         
         def _ask_upd(self):
             d = ctk.CTkToplevel(self); d.title("Database Check"); center_window(d, 400, 250); d.attributes("-topmost", True); d.protocol("WM_DELETE_WINDOW", lambda: os._exit(0))
-            self.upd_window = d # Keep ref
+            self.upd_window = d
             ctk.CTkLabel(d, text="ARCHIVE FOUND", font=("Impact", 24)).pack(pady=(20, 10))
             ctk.CTkLabel(d, text="Files detected. Validate updates from Wiki?", font=("Arial", 14, "bold")).pack(pady=5)
             row = ctk.CTkFrame(d, fg_color="transparent"); row.pack()
@@ -843,45 +613,69 @@ try:
 
         def _init_main(self):
             if not self.data.load_db(): return
-            # --- LEFT SIDEBAR ---
+            # --- SIDEBAR ---
             sb = ctk.CTkFrame(self, width=280, corner_radius=0); sb.pack(side="left", fill="y")
-            ctk.CTkLabel(sb, text="FUN HOUSE", font=("Impact", 30)).pack(pady=(30,0))
+            ctk.CTkLabel(sb, text="ROR2\nDungeon\nMaster", font=("Impact", 30)).pack(pady=(30,0))
             ctk.CTkLabel(sb, text=f"v{VERSION}", text_color="gray").pack(pady=(0,20))
             ctk.CTkButton(sb, text="MANAGE PROFILES", fg_color="#333", command=lambda: ProfileConsole(self, self._lp, self._sp, self.prof)).pack(fill="x", padx=20)
             self.lp_lbl = ctk.CTkLabel(sb, text=f"Active: {self.prof}", text_color="cyan"); self.lp_lbl.pack(pady=5)
             
-            # Hotkey Summary Panel
             ctk.CTkLabel(sb, text="ACTIVE HOTKEYS", font=("Arial", 12, "bold")).pack(pady=(20,5))
             self.hk_labels = {}
             for k in ["Architect", "Boss", "Mob"]:
-                f = ctk.CTkFrame(sb, fg_color="transparent")
-                f.pack(fill="x", padx=10)
+                f = ctk.CTkFrame(sb, fg_color="transparent"); f.pack(fill="x", padx=10)
                 ctk.CTkLabel(f, text=f"{k}:", width=60, anchor="w").pack(side="left")
-                l = ctk.CTkLabel(f, text="...", text_color="yellow", anchor="w")
-                l.pack(side="left")
-                self.hk_labels[k] = l
-            self.conflict_lbl = ctk.CTkLabel(sb, text="", text_color="red", font=("Arial", 10, "bold"))
-            self.conflict_lbl.pack(pady=5)
+                l = ctk.CTkLabel(f, text="...", text_color="yellow", anchor="w"); l.pack(side="left"); self.hk_labels[k] = l
+            self.conflict_lbl = ctk.CTkLabel(sb, text="", text_color="red", font=("Arial", 10, "bold")); self.conflict_lbl.pack(pady=5)
             
             ctk.CTkLabel(sb, text="GAME LAUNCH", font=("Arial", 12, "bold")).pack(pady=(20,5))
-            self.stm_menu = ctk.CTkOptionMenu(sb, values=self.steam.accounts, variable=self.steam_user); self.stm_menu.pack(padx=20, pady=2, fill="x")
-            self.launch_armed = ctk.BooleanVar(value=False)
-            ctk.CTkSwitch(sb, text="Armed", variable=self.launch_armed, command=self._tog_launch, progress_color="red").pack(pady=5)
-            self.btn_launch = ctk.CTkButton(sb, text="LAUNCH ROR2", fg_color="darkred", state="disabled", command=self._launch_game); self.btn_launch.pack(pady=5, padx=20)
+            
+            # Mod Loader Detection
+            if self.mods.path:
+                ctk.CTkLabel(sb, text="MOD MANAGER DETECTED", text_color="cyan", font=("Arial", 10, "bold")).pack()
+                ctk.CTkLabel(sb, text="⚠️ REQUIRES DevToolkit ⚠️", text_color="orange", font=("Arial", 10)).pack()
+                ctk.CTkButton(sb, text="LAUNCH R2MODMAN", fg_color="#0055AA", command=self._launch_mod).pack(pady=5, padx=20)
+            else:
+                self.stm_menu = ctk.CTkOptionMenu(sb, values=self.steam.accounts, variable=self.steam_user); self.stm_menu.pack(padx=20, pady=2, fill="x")
+                self.launch_armed = ctk.BooleanVar(value=False)
+                ctk.CTkSwitch(sb, text="Armed", variable=self.launch_armed, command=self._tog_launch, progress_color="red").pack(pady=5)
+                self.btn_launch = ctk.CTkButton(sb, text="LAUNCH ROR2", fg_color="darkred", state="disabled", command=self._launch_game); self.btn_launch.pack(pady=5, padx=20)
             
             ctk.CTkButton(sb, text="SAFE CLOSE", fg_color="#400", command=self.request_close).pack(side="bottom", pady=20, padx=20)
             self.stat = ctk.CTkLabel(sb, text="Ready", text_color="#00FF00"); self.stat.pack(side="bottom", pady=5)
             
-            # --- RIGHT TABS ---
+            # --- TABS ---
             self.main_tabs = ctk.CTkTabview(self); self.main_tabs.pack(side="right", fill="both", expand=True, padx=10, pady=10)
             
-            # TAB 1: ARCHITECT
+            # ARCHITECT TAB
             self.main_tabs.add("Architect")
             t_arch = self.main_tabs.tab("Architect")
             self._build_hotkey_ui(t_arch, "Architect", "Inject Selected Items")
             
+            # Quantity Control Panel (Redesigned)
+            qc = ctk.CTkFrame(t_arch, fg_color="transparent"); qc.pack(fill="x", padx=10, pady=5)
+            
+            # Row 1: Bulk Selectors
+            r1 = ctk.CTkFrame(qc, fg_color="transparent"); r1.pack(fill="x", pady=5)
+            ctk.CTkButton(r1, text="ALL", width=60, command=self._sel_all).pack(side="left", padx=5)
+            ctk.CTkButton(r1, text="NONE", width=60, command=self._sel_none).pack(side="left", padx=5)
+            ctk.CTkButton(r1, text="RESET", width=60, fg_color="red", command=self._sel_reset).pack(side="right", padx=5)
+            
+            # Row 2: Quantity Setter
+            r2 = ctk.CTkFrame(qc, fg_color="transparent"); r2.pack(fill="x", pady=5)
+            ctk.CTkLabel(r2, text="Set Selected To:").pack(side="left", padx=5)
+            
+            def q_change(val): 
+                if val == "Custom": self.ent_custom.pack(side="left", padx=5)
+                else: self.ent_custom.pack_forget()
+            
+            self.seg_qty = ctk.CTkSegmentedButton(r2, values=["1", "5", "10", "Custom"], variable=self.qty_mode, command=q_change)
+            self.seg_qty.pack(side="left", padx=5)
+            self.ent_custom = ctk.CTkEntry(r2, textvariable=self.qty_custom_val, width=50) # Hidden by default logic
+            
+            ctk.CTkButton(r2, text="APPLY", width=60, fg_color="#444", command=self._apply_qty).pack(side="left", padx=10)
+
             self.item_tabs = ctk.CTkTabview(t_arch, command=self._tc); self.item_tabs.pack(fill="both", expand=True)
-            # Sort tabs by Rarity Logic (Visual Order)
             rarity_order = ["Common", "Uncommon", "Legendary", "Boss", "Lunar", "Void", "Equipment", "Lunar Equipment", "Meal"]
             sorted_cats = sorted(self.data.db.keys(), key=lambda x: rarity_order.index(x) if x in rarity_order else 99)
             
@@ -890,18 +684,14 @@ try:
                 f = ctk.CTkScrollableFrame(self.item_tabs.tab(c))
                 f.pack(fill="both", expand=True)
                 self.cat_f[c] = f
-                # Header Stripe
                 ctk.CTkFrame(f, height=5, fg_color=RARITY_VIBES.get(c, "#333")).pack(fill="x", pady=(0,5))
-                
-            ctk.CTkButton(t_arch, text="Set All 10 (Selected)", fg_color="#555", command=self._s10).pack(pady=5)
 
-            # TAB 2: DIRECTOR
+            # DIRECTOR TAB
             self.main_tabs.add("Director")
             t_dir = self.main_tabs.tab("Director")
             self.dir_tabs = ctk.CTkTabview(t_dir); self.dir_tabs.pack(fill="both", expand=True)
             self.dir_tabs.add("Boss Rush")
             self.dir_tabs.add("Mob Modifier")
-            
             self._build_director_ui(self.dir_tabs.tab("Boss Rush"), BOSS_DB, "Boss")
             self._build_director_ui(self.dir_tabs.tab("Mob Modifier"), MOB_DB, "Mob")
             
@@ -909,8 +699,7 @@ try:
             self.after(200, self._tc); self._sl(); self._update_hk_summary()
 
         def _build_hotkey_ui(self, parent, tab_key, action_desc):
-            f = ctk.CTkFrame(parent, fg_color="transparent")
-            f.pack(fill="x", padx=5, pady=5)
+            f = ctk.CTkFrame(parent, fg_color="transparent"); f.pack(fill="x", padx=5, pady=5)
             ctk.CTkLabel(f, text=f"Hotkey ({action_desc}):", font=("Arial", 11, "bold")).pack(side="left")
             mode_var = self.hk_cfg[tab_key]["mode"]; key_var = self.hk_cfg[tab_key]["key"]
             seg = ctk.CTkSegmentedButton(f, values=["Keyboard", "Controller"], variable=mode_var, command=lambda x: self._update_hk_summary())
@@ -981,13 +770,44 @@ try:
             btn.pack(pady=5); self.loop_buttons[type_name] = btn
             ctk.CTkCheckBox(pf, text="Smart Spawn (Only when < 1 Enemy)", variable=self.smart_chk_vars[type_name]).pack(pady=5)
 
+        # --- NEW UI LOGIC ---
+        def _sel_all(self):
+            for k, v in self.sel_i.items():
+                # Only select items currently visible in the active tab would be complex, 
+                # so we select ALL loaded items in the current dict. 
+                # To be precise to the tab, we'd need to filter by act_c
+                if self.act_c:
+                    # Check if item K belongs to active category
+                    pass # Optimization for later. For now, check all.
+                v["chk"].set(True)
+        
+        def _sel_none(self):
+            for v in self.sel_i.values(): v["chk"].set(False)
+            
+        def _sel_reset(self):
+            for v in self.sel_i.values():
+                v["chk"].set(False)
+                v["qty"].set("0")
+
+        def _apply_qty(self):
+            mode = self.qty_mode.get()
+            val = mode
+            if mode == "Custom": val = self.qty_custom_val.get()
+            
+            for v in self.sel_i.values():
+                if v["chk"].get(): v["qty"].set(val)
+
+        def _launch_mod(self):
+            msg = self.mods.launch()
+            self.stat.configure(text=msg, text_color="cyan")
+
+        # --- CORE LOGIC ---
         def _add_queue(self, db, type_name, var_sel, var_count, var_elite, var_team):
             name = var_sel.get()
             self.queues[type_name].append({
                 "id": db[name], "count": var_count.get(),
                 "elite": ELITE_MODIFIERS[var_elite.get()],
-                "team": TEAM_INDICES[var_team.get()],
-                "name": name
+                "team": TEAM_INDICES[var_team.get()], "name": name
             })
             self._update_q_ui(type_name)
 
@@ -1140,40 +960,53 @@ try:
         def _s10(self): 
             for v in self.sel_i.values(): 
                 if v["chk"].get(): v["qty"].set("10")
+        
         def _inj(self):
-            self.stat.configure(text="INJECTING...", text_color="orange"); cmds = []
+            # --- KILL SWITCH LOGIC ---
+            if self.injecting:
+                self.injecting = False
+                self.stat.configure(text="ABORTED", text_color="red")
+                return
+            
+            self.injecting = True
+            self.stat.configure(text="INJECTING... (Press Hotkey to Stop)", text_color="orange")
+            
+            cmds = []
             for i, v in self.sel_i.items():
                 if v["chk"].get():
                     try: 
-                        # --- CRITICAL FIX: DISCRIMINATE ITEM VS EQUIPMENT ---
-                        # The game command is 'give_equip' for orange/blue active items
-                        # And 'give_item' for passives.
-                        # We check the Rarity RAW stored in the meta.
-                        rarity = v.get("rarity_raw", "Common") # Need to access this from self.data.db lookup
-                        
-                        # Look up rarity from DB since self.sel_i only stores qty/chk
                         rarity = "Common"
                         for cat_name, cat_items in self.data.db.items():
                             found = False
                             for it in cat_items:
                                 if it["id"] == i:
-                                    rarity = cat_name
-                                    found = True
-                                    break
+                                    rarity = cat_name; found = True; break
                             if found: break
-                        
                         cmd_type = "give_item"
                         if "Equipment" in rarity: cmd_type = "give_equip"
-                        
                         if int(v["qty"].get()) > 0: 
                             cmds.append(f"{cmd_type} {i} {v['qty'].get()}")
                     except: pass
-            if not cmds: self.stat.configure(text="No Items", text_color="yellow"); return
+            
+            if not cmds: 
+                self.stat.configure(text="No Items", text_color="yellow")
+                self.injecting = False
+                return
+
             def r():
                 time.sleep(0.1); pydirectinput.press('f2'); time.sleep(0.1)
                 keyboard.write("cheats 1"); time.sleep(0.01); pydirectinput.press('enter'); time.sleep(0.01)
-                for c in cmds: keyboard.write(c); time.sleep(0.01); pydirectinput.press('enter'); time.sleep(0.01)
-                pydirectinput.press('f2'); self.stat.configure(text="Done", text_color="green")
+                for c in cmds: 
+                    if not self.injecting: break # KILL SWITCH CHECK
+                    keyboard.write(c); time.sleep(0.01); pydirectinput.press('enter'); time.sleep(0.01)
+                pydirectinput.press('f2')
+                
+                if self.injecting:
+                    self.stat.configure(text="Done", text_color="green")
+                else:
+                    self.stat.configure(text="ABORTED", text_color="red")
+                self.injecting = False
+
             threading.Thread(target=r, daemon=True).start()
 
     if __name__ == "__main__":
