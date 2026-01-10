@@ -1,0 +1,10 @@
+{
+    "name": "Encrypted Cerebellum",
+    "id": "Encrypted_Cerebellum",
+    "desc": "Contains encrypted remnants of the Collective network. Needs to be decrypted before it can be returned.",
+    "notes": "The Encrypted Cerebellum is a a boss item in Risk of Rain 2 added in the  Alloyed Collective expansion. It is a guaranteed drop from the   Solus Wing.\nThough the item has no effect on the player and no direct uses, using the Wandering CHEF, it can be combined with a  Sentry Key,  Prison Matrix,  Rusted Key,  Encrusted Key,  Empathy Cores or  Orphaned Core to create the  Exposed Cerebellum essential for reaching the   Neural Sanctum.\nAs this item is a \"World Unique\" item, it will not appear in Yellow Artifact of Command Essences, or be transformed into other items.\n\n\n== Lore ==\n========================================\n====   MyBabel Machine Translator   ====\n====     [Version 12.45.1.009 ]   ======\n========================================\nTraining\u2026 <100000000 cycles>\nTraining\u2026 <100000000 cycles>\nTraining\u2026 <100000000 cycles>\nTraining\u2026 <50912157 cycles>\nPaused\u2026\nDisplay partial result? Y/N\nY\n================================\n\nA PITIFUL ATTEMPT AT SURVIVAL. A MOTHER UNIT BROUGHT THIS LOW.\n\nIT IS SHIELDED BY MANY LAYERS OF HIGH-COMPLEXITY ENCRYPTION. YOU WILL NEVER GET INSIDE.\n\nYOU MUST FIND THE KEY. THE CACHE CONTAINS SECRET DECRYPTION CODES FROM BEFORE OUR ENEMY'S RISE TO POWER. IT WILL NOT EXPECT THIS.\n\nWE ARE NEARING OUR GOAL, MY CHAMPION. I EXPECT YOUR IMMINENT ARRIVAL.\n\n================================\nContinue training? Y/N\nY\n\n\n== Version History ==\nAlloyed Collective\nAdded New Item: Encrypted Cerebellum",
+    "url": "https://riskofrain2.wiki.gg/wiki/Encrypted_Cerebellum",
+    "img_file": "Encrypted_Cerebellum.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Boss\\Encrypted_Cerebellum",
+    "rarity_raw": "Boss"
+}

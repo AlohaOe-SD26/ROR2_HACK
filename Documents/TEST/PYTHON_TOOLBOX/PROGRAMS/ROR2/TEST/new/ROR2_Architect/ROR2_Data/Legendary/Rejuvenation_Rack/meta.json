@@ -1,0 +1,10 @@
+{
+    "name": "Rejuvenation Rack",
+    "id": "Rejuvenation_Rack",
+    "desc": "Heal +100% (+100% per stack) more.",
+    "notes": "The Rejuvenation Rack is an item in Risk of Rain 2. It is unlocked and starts appearing in runs after completing the Naturopath Challenge.\nThe item increases all healing and passive health regeneration by 100% (+100% per stack), including the player's base health regeneration.\n\n\n== Tips ==\nThis item synergizes very well with all healing items,  N'kuhana's Opinion, and  Aegis.\nDue to how  Corpsebloom works, this item will cause it to double dip and be an effective 8x increase in healing with a single of each item\nAssuming the player has at least 1 Corpsebloom, the full formula for how much healing the player receives is DirectHealing \u22c5 (Corpseblooms + 1) \u22c5 (RejuvenationRacks +1)^2\nUnless the player also has an Aegis or N'kuhana's Opinion, they should avoid the  Transcendence and  Shared Design. Both of these items effectively negate all healing by turning all health into shields, so the bonus healing would go unused.\nThe Aegis gives use to healing by transforming overheals into barriers, and N'kuhana's Opinion can still weaponize healing to attack enemies from afar.\n\n\n== Lore ==\n\"Nature has a way of nurturing the physical. The mind, by perseverance and dedication. The soul, however... is healed by fantasy, and fantasy alone.\"\n\n-Unknown Venetian monk\n\n\n== Version History ==\nEarly Access Scorched Acres Content Update\nMajor Content and Changes\nAdded New Lore Entry: Rejuvenation Rack",
+    "url": "https://riskofrain2.wiki.gg/wiki/Rejuvenation_Rack",
+    "img_file": "Rejuvenation_Rack.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Legendary\\Rejuvenation_Rack",
+    "rarity_raw": "Legendary"
+}

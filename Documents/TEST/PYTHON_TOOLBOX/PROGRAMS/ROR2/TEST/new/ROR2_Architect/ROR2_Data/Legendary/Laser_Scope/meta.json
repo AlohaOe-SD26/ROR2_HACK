@@ -1,0 +1,10 @@
+{
+    "name": "Laser Scope",
+    "id": "Laser_Scope",
+    "desc": "Critical Strikes deal an additional 100% damage (+100% per stack) .",
+    "notes": "The Laser Scope is an item in Risk of Rain 2, added in the Survivors of the Void expansion. \nThe holder's critical strike damage bonus is increased by 100% (+100% per stack). For example, if the player has one Laser Scope, their critical strikes would deal 3 times the damage of a regular attack, instead of 2 times as much.\n\n\n== Notes ==\nSince   Railgunner's critical strike damage increases based on her critical strike chance, this item is equivalent to picking up 10  Lens-Maker's Glasses while playing as her.\nWhen the holder lands a critical strike, a glowing red crosshair appears over the struck enemy for a moment.\n\n\n== Lore ==\nOrder: Scope with Laser Addon\n\nTracking Number: 21******\n\nEstimated Delivery: 03/22/2060\n\nShipping Method: Priority\n\nShipping Address: Royal Drive, Bubble Station, Mars\n\nShipping Details:\n\nAn improved model compared to my last shipment, this one has all the perks of the last model PLUS a fancy new laser pointer to help improve aim.\n\nAnd, knowing you, it can blind your targets when you do those fancy acrobatics prior to firing. I gotta admit, that last video was pretty cool... Just don't let the union find out about it. You'll lose more than your license if they catch you playing with this.\n\n\n== Version History ==\nSurvivors of the Void\n(Undocumented) Added New Item: Laser Scope\n\n\n== Trivia ==\nThe logbook entry is the direct sequel to the Telescopic Sight's logbook entry from Risk of Rain 1.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Laser_Scope",
+    "img_file": "Laser_Scope.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Legendary\\Laser_Scope",
+    "rarity_raw": "Legendary"
+}

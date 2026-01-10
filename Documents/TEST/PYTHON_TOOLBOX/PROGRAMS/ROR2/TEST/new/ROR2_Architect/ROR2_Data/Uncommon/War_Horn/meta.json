@@ -1,0 +1,10 @@
+{
+    "name": "War Horn",
+    "id": "War_Horn",
+    "desc": "Activating your Equipment gives you +70% attack speed for 8s (+4s per stack) .",
+    "notes": "The War Horn is an item introduced in the Scorched Acres Update. It is unlocked and starts appearing in runs after completing the Warmonger Challenge.\nWhen the holder activates their equipment, they get the {  Energized buff for 8s (+4s per stack), giving them 70% increased attack speed. \n\n\n== Notes ==\nUpon activating an equipment with this item, a distinct \"ting\" sound will play.\nThis item works well with the  Spinel Tonic, as the Tonic's stat boosts are multipliers, increasing the 70% attack speed buff to about 120% instead.\nIf the player uses the  Gesture of the Drowned to keep the Tonic's buff up constantly, they only need 4 War Horns to keep the Energized buff active constantly as well.\n\n\n== Lore ==\n\"The War of 2019, while lasting only a brief year, was the bloodiest conflict in human history. As the war got deadlier throughout the year, many rebel groups began to rely on tradition and history for inspiration. \n\nThe War Horn, pictured above was a favorite of the Northern Fist Rebellion for both its inspirational and tactical uses.\"\n\n-Exhibit at The National WW19 Museum\n\n\n== Version History ==\nEarly Access Scorched Acres Content Update\nMajor Content and Changes\nAdded New Item: Warhorn\nAdded New Lore Entry: War Horn",
+    "url": "https://riskofrain2.wiki.gg/wiki/War_Horn",
+    "img_file": "War_Horn.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Uncommon\\War_Horn",
+    "rarity_raw": "Uncommon"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "Personal Shield Generator",
+    "id": "Personal_Shield_Generator",
+    "desc": "Gain a shield equal to 8% (+8% per stack) of your maximum health . Recharges outside of danger.",
+    "notes": "The Personal Shield Generator is an item in Risk of Rain 2.\nThe item adds a passive shield equal to 8% (+8% per stack) of the player's max HP on top of their health.  \n\n\n== Notes ==\nShields cannot be healed by conventional means, and will only replenish after avoiding damage for 7 seconds.\nThis item is affected by the  Shaped Glass. When the player's maximum health is halved, the amount of shields they gain is also reduced.\nThis item can benefit a player with  Transcendence, since it will increase the shield by a small degree.\nHowever,  Transcendence's maximum health increase does not affect the amount of shield gained from this item.\n\n\n== Tips ==\nThe extra shield is particularly useful with  Plasma Shrimp, as it can provide more reliable uptime of its effect.\n\n\n== Lore ==\n\"While the kinetic rating is very poor, the extremely cheap production costs of Hinon\u2019s Personal Barrier made it a great budget tool for hikers, sailors, and even daily commuters to be comfortable in harsh weather. Many people in the office figured out they could replace their expensive winter jackets with comfortable, trendy personal barriers!\"\n\n-Top 10 Best Personal Barriers of 2053\n\n\n== Version History ==\nEarly Access Hidden Realms Content Update\nMajor Content\nAdded New Item Lore Entry: Personal Shield Generator\nGameplay Changes\nShield Health: 25(+25 per stack) \u21d2 8% (+8% per stack) maximum health",
+    "url": "https://riskofrain2.wiki.gg/wiki/Personal_Shield_Generator",
+    "img_file": "Personal_Shield_Generator.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Common\\Personal_Shield_Generator",
+    "rarity_raw": "Common"
+}

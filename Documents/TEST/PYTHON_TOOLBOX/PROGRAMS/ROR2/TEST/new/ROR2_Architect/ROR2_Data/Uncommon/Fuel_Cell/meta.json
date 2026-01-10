@@ -1,0 +1,10 @@
+{
+    "name": "Fuel Cell",
+    "id": "Fuel_Cell",
+    "desc": "Hold an additional equipment charge (+1 per stack) . Reduce equipment cooldown by 15% (+15% per stack) .",
+    "notes": "The Fuel Cell is an item in Risk of Rain 2. It is unlocked and starts appearing in runs after completing the Experimenting Challenge.\nThe item grants an 1 (+1 per stack) additional equipment charge per stack, and reduces equipment cooldown by 15% (+15% per stack).\nThis item stacks linearly with additional equipment charges, and exponentially with equipment cooldown.\n\n\n== Notes ==\nThe maximum amount of possible equipment charges is 255, with 254 Fuel Cells.\nIf extra equipment charges are ready and then the player loses Fuel Cells (e.g. by using a Scrapper), the extra charges will remain until used up. However, those extra charges will not recharge once used, unless the player collects more Fuel Cells again.\n\n\n== Math ==\nThe equipment cooldown is determined by the formula cooldown * (1 - 0.15) ^ amount\n\nIf the player has any  Gesture of the Drowned, refer to the math on that page for the cooldown formula and values, by adding the amount of Fuel Cells & Gestures, as additional Gestures share the same reduction as Fuel Cells.\n\n\n== Lore ==\n\"As humanity began to venture out into the depths of space, high-energy but low-volume fuel sources became critical for interplanetary travel. Stability came later.\"\n-Brief History of Interplanetary Advances, Vol.2",
+    "url": "https://riskofrain2.wiki.gg/wiki/Fuel_Cell",
+    "img_file": "Fuel_Cell.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Uncommon\\Fuel_Cell",
+    "rarity_raw": "Uncommon"
+}

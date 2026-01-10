@@ -1,0 +1,10 @@
+{
+    "name": "Hunter's Harpoon",
+    "id": "Hunter_s_Harpoon",
+    "desc": "Killing an enemy increases movement speed by 125% , fading over 1 (+0.5 per stack) seconds.",
+    "notes": "The Hunter's Harpoon is an item in Risk of Rain 2, added in the Survivors of the Void expansion.\nUpon killing an enemy, the holder gains 5 stacks of the {  Kill Move Speed buff (with a maximum of 5 stacks at a time). Each stack of this buff increases the holder's movement speed by 25%, for a total increase of 125%. Each stack lasts only 0.2 seconds (+0.1s per stack), so all stacks are lost across 1 second (+0.5s per stack) if more enemies are not killed. \n\n\n== Notes ==\nWhen this effect triggers, a unique sound effect will play, and visual blur lines will appear over the character.\n\n\n== Tips ==\nThe  Forgive Me Please will activate the Hunter's Harpoon. However, since the buff decays rapidly, the speed gained will be inconsistent without multiple stacks.\n\n\n== Lore ==\nOrder: Harpoon\n\nTracking Number: 01******\n\nEstimated Delivery: 07/21/2058\n\nShipping Method: Priority\n\nShipping Address: Saint Mary's Port, Keelhaul Key\n\nShipping Details:\nThey say that you can spear two catches with one throw of this ol' lassie. And hey, if you can't, if you're fast enough, nobody will be able to tell the difference! Wahahaha!\n\n\n== Version History ==\nSurvivors of the Void\n(Undocumented) Added New Item: Hunter's Harpoon\n\n\n== Trivia ==\nThe location \"Keelhaul Key\" in the logbook entry's shipping address is a reference to Paper Mario: The Thousand-Year Door, where in Chapter 5 of the game, the main location is called Keelhaul Key.",
+    "url": "https://riskofrain2.wiki.gg/wiki/Hunter%27s_Harpoon",
+    "img_file": "Hunter_s_Harpoon.png",
+    "local_path": "C:\\Users\\Kinny\\Documents\\TEST\\PYTHON_TOOLBOX\\PROGRAMS\\ROR2\\ROR2_Architect\\ROR2_Data\\Uncommon\\Hunter_s_Harpoon",
+    "rarity_raw": "Uncommon"
+}
